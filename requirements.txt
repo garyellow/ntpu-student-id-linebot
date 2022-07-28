@@ -1,0 +1,5 @@
+django==3.2.7
+beautifulsoup4==4.11.1
+requests==2.27.1
+
+boto==2.49.0

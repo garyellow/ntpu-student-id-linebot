@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup as BS4
-import settings
 from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from fake_useragent import UserAgent
@@ -30,8 +29,8 @@ department_number = {
 
 department_name = {v: k for k, v in department_number.items()}
 
-line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
-parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+parser = WebhookParser(LINE_CHANNEL_SECRET)
 
 
 @csrf_exempt
