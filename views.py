@@ -1,5 +1,7 @@
-import requests
 import os
+
+import requests
+from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup as BS4
 from flask import Flask, request, abort
 from fake_useragent import UserAgent
@@ -31,8 +33,9 @@ department_number = {
 
 department_name = {v: k for k, v in department_number.items()}
 
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-handler = WebhookParser(LINE_CHANNEL_SECRET)
+s3 = S3Connection(os.environ['LINE_CHANNEL_ACCESS_TOKEN'], os.environ['LINE_CHANNEL_SECRET'])
+line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
+handler = WebhookParser(os.environ['LINE_CHANNEL_SECRET'])
 
 
 @app.route("/callback", methods=['POST'])
