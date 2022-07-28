@@ -38,11 +38,11 @@ line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET'])
 
 
-@app.route("/callback", methods=['POST'])
+@app.route('/callback', methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    app.logger.info('Request body: ' + body)
 
     try:
         handler.handle(body, signature)
@@ -59,22 +59,22 @@ def handle_message(event):
         elif event.message.text.strip('系') in department_number.keys():
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
         elif event.message.text.isdecimal() and event.message.text[0] in ['3', '4', '7']:
-            header = {"user-agent": UserAgent().random}
-            url = "http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&fmKeyword=" + event.message.text
+            url = 'https://lms.ntpu.edu.tw/' + event.message.text
+            header = {'user-agent': UserAgent().random}
             web = requests.get(url, headers=header)
-            web.encoding = "utf-8"
+            web.encoding = 'utf-8'
 
-            html = BS4(web.text, "html.parser")
-            name = html.find("div", {"class": "bloglistTitle"})
+            html = BS4(web.text, 'html.parser')
+            name = html.find('div', {'class': 'infoPath'}).find('a')
 
             if name is None:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號" + event.message.text + "不存在"))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.text))
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名'))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 80))
     app.run(host='0.0.0.0', port=port)
