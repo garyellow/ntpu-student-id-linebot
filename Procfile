@@ -1,1 +1,1 @@
-web:gunicorn Python student.py
+web: gunicorn student:app
