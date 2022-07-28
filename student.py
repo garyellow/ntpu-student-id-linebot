@@ -54,11 +54,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if isinstance(event, MessageEvent):
-        if event.message.text in department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
-        elif event.message.text.strip('系') in department_number.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
-        elif event.message.text.isdecimal() and event.message.text[0] in ['3', '4', '7']:
+        if event.message.text.isdecimal() and event.message.text[0] in ['3', '4', '7']:
             url = 'https://lms.ntpu.edu.tw/' + event.message.text
             header = {'user-agent': UserAgent().random}
             web = requests.get(url, headers=header)
@@ -71,6 +67,11 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
+
+        elif event.message.text.strip('系') in department_number.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
+        elif event.message.text in department_name.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名'))
 
