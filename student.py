@@ -71,6 +71,8 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號" + event.message.text + "不存在"))
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.text))
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名"))
 
 
 if __name__ == "__main__":
