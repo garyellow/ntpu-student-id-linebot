@@ -3,9 +3,9 @@ import os
 import requests
 from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup as BS4
-from flask import Flask, request, abort
 from fake_useragent import UserAgent
-from linebot import LineBotApi, WebhookParser
+from flask import Flask, request, abort
+from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 
@@ -35,7 +35,7 @@ department_name = {v: k for k, v in department_number.items()}
 
 s3 = S3Connection(os.environ['LINE_CHANNEL_ACCESS_TOKEN'], os.environ['LINE_CHANNEL_SECRET'])
 line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
-handler = WebhookParser(os.environ['LINE_CHANNEL_SECRET'])
+handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET'])
 
 
 @app.route("/callback", methods=['POST'])
@@ -48,7 +48,6 @@ def callback():
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
-
     return 'OK'
 
 
