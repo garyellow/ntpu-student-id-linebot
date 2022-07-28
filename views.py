@@ -37,16 +37,16 @@ handler = WebhookParser(LINE_CHANNEL_SECRET)
 
 @app.route("/callback", methods=['POST'])
 def callback():
-    if request.method == "POST":
-        signature = request.headers['X-Line-Signature']
-        body = request.get_data(as_text=True)
-        app.logger.info("Request body: " + body)
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
 
-        try:
-            handler.handle(body, signature)
-        except InvalidSignatureError:
-            abort(400)
-        return 'OK'
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+
+    return 'OK'
 
 
 @handler.add(MessageEvent, message=TextMessage)
