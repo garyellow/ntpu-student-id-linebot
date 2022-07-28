@@ -1,11 +1,13 @@
 import requests
+import os
 from bs4 import BeautifulSoup as BS4
-from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from flask import Flask, request, abort
 from fake_useragent import UserAgent
 from linebot import LineBotApi, WebhookParser
-from linebot.exceptions import InvalidSignatureError, LineBotApiError
+from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
+
+app = Flask(__name__)
 
 department_number = {
     '法律': 71, '法學': 712, '司法': 714, '財法': 716,
@@ -33,43 +35,42 @@ line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(LINE_CHANNEL_SECRET)
 
 
-@csrf_exempt
-def callback(request):
+@app.route("/callback", methods=['POST'])
+def callback():
     if request.method == "POST":
-        message = []
-
-        signature = request.META["HTTP_X_LINE_SIGNATURE"]
-        body = request.body.decode("utf-8")
-
-        message.append(TextSendMessage(text=str(body)))
+        signature = request.headers['X-Line-Signature']
+        body = request.get_data(as_text=True)
+        app.logger.info("Request body: " + body)
 
         try:
-            e = parser.parse(body, signature)
+            handler.handle(body, signature)
         except InvalidSignatureError:
-            return HttpResponseForbidden()
-        except LineBotApiError:
-            return HttpResponseBadRequest()
+            abort(400)
+        return 'OK'
 
-        for event in e:
-            if isinstance(event, MessageEvent):
-                if event.message.text in department_number.keys():
-                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text]))
-                elif event.message.text.strip('系') in department_name.keys():
-                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text]))
-                elif event.message.text.isdecimal() and event.message.text[0] in ['3', '4', '7']:
-                    header = {"user-agent": UserAgent().random}
-                    url = "http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&fmKeyword=" + event.message.text
-                    web = requests.get(url, headers=header)
-                    web.encoding = "utf-8"
 
-                    html = BS4(web.text, "html.parser")
-                    name = html.find("div", {"class": "bloglistTitle"})
+@handler.add(MessageEvent)
+def handle_message(event):
+    if isinstance(event, MessageEvent):
+        if event.message.text in department_number.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text]))
+        elif event.message.text.strip('系') in department_name.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text]))
+        elif event.message.text.isdecimal() and event.message.text[0] in ['3', '4', '7']:
+            header = {"user-agent": UserAgent().random}
+            url = "http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&fmKeyword=" + event.message.text
+            web = requests.get(url, headers=header)
+            web.encoding = "utf-8"
 
-                    if name is None:
-                        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號" + event.message.text + "不存在"))
-                    else:
-                        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.text))
+            html = BS4(web.text, "html.parser")
+            name = html.find("div", {"class": "bloglistTitle"})
 
-        return HttpResponse()
-    else:
-        return HttpResponseBadRequest()
+            if name is None:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="學號" + event.message.text + "不存在"))
+            else:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.text))
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=port)
