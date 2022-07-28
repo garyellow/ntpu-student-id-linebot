@@ -1,4 +1,4 @@
-django==3.2.7
+django==3.2.14
 requests==2.27.1
 beautifulsoup4==4.11.1
 fake_useragent==0.1.11
