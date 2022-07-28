@@ -65,12 +65,12 @@ def handle_message(event):
             web.encoding = 'utf-8'
 
             html = BS4(web.text, 'html.parser')
-            name = html.find('div', {'class': 'infoPath'}).find('a')
+            name = html.find('div', {'class': 'infoPath'})
 
             if name is None:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
             else:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.text))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名'))
 
