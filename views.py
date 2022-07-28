@@ -32,7 +32,7 @@ department_number = {
 department_name = {v: k for k, v in department_number.items()}
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-parser = WebhookParser(LINE_CHANNEL_SECRET)
+handler = WebhookParser(LINE_CHANNEL_SECRET)
 
 
 @app.route("/callback", methods=['POST'])
@@ -49,7 +49,7 @@ def callback():
         return 'OK'
 
 
-@handler.add(MessageEvent)
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if isinstance(event, MessageEvent):
         if event.message.text in department_number.keys():
@@ -72,5 +72,4 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 80))
-    app.run(host='0.0.0.0', port=port)
+    app.run()
