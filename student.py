@@ -87,18 +87,17 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TemplateSendMessage(
-                    alt_text='選擇模式',
+                    alt_text='確認學年度',
                     template=ConfirmTemplate(
                         text='是否要查詢 ' + str(year) + ' 學年度的學生',
                         actions=[
                             PostbackAction(
                                 label='哪次不是',
-                                display_text='開始查詢',
                                 data='查詢全系' + str(year)
                             ),
                             MessageAction(
                                 label='我在想想',
-                                display_text='再啦ㄍಠ_ಠ'
+                                text='再啦ㄍಠ_ಠ'
                             )
                         ]
                     )
