@@ -91,14 +91,14 @@ def handle_message(event):
                     template=ConfirmTemplate(
                         text='是否要查詢 ' + str(year) + ' 學年度的學生',
                         actions=[
-                            PostbackTemplateAction(
+                            PostbackAction(
                                 label='哪次不是',
-                                display_text='開始查詢',
+                                text='開始查詢',
                                 data='查詢全系' + str(year)
                             ),
                             MessageAction(
                                 label='我在想想',
-                                display_text='再啦ㄍಠ_ಠ'
+                                text='再啦ㄍಠ_ಠ'
                             )
                         ]
                     )
@@ -406,7 +406,7 @@ def handle_message(event):
                 reply_message += name + ' ' + number + '\n'
                 people_cnt += 1
 
-        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
+        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]]\
                          + '系總共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
