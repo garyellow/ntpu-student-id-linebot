@@ -90,20 +90,18 @@ def handle_message(event):
                     TemplateSendMessage(
                         alt_text='選擇模式',
                         template=ConfirmTemplate(
-                            thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
-                            title='是否要查詢 ' + str(year) + ' 學年度的學生',
-                            text='請選擇模式',
+                            text='是否要查詢 ' + str(year) + ' 學年度的學生',
                             actions=[
                                 PostbackAction(
                                     label='哪次不是',
                                     text='開始查詢',
-                                    data='查詢全系' + str(year),
+                                    data='查詢全系' + str(year)
                                 ),
                                 MessageAction(
                                     label='我在想想',
-                                    text='再啦ㄍಠ_ಠ',
-                                ),
-                            ],
+                                    text='再啦ㄍಠ_ಠ'
+                                )
+                            ]
                         )
                     )
                 )
@@ -117,7 +115,7 @@ def handle_message(event):
                 TemplateSendMessage(
                     alt_text='選擇學院群',
                     template=ButtonsTemplate(
-                        # thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
+                        thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
                         title='選擇學院群',
                         text='請選擇科系所屬學院群',
                         actions=[
