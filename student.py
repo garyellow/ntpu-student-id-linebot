@@ -102,7 +102,7 @@ def handle_message(event):
                                     label='我在想想',
                                     text='再啦ㄍಠ_ಠ',
                                 )
-                            ]
+                            ],
                         )
                     )
                 )
