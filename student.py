@@ -93,6 +93,7 @@ def handle_message(event):
                         actions=[
                             PostbackAction(
                                 label='哪次不是',
+                                text='哪次不是',
                                 data='查詢全系' + str(year)
                             ),
                             MessageAction(
@@ -103,7 +104,7 @@ def handle_message(event):
                     )
                 )
             )
-    else:
+    elif event.message.text != '哪次不是':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系'))
 
 
