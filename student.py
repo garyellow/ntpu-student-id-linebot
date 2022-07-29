@@ -135,7 +135,7 @@ def handle_message(event):
             )
         )
 
-    elif event.postback.startswith('文法商'):
+    elif event.postback.data.startswith('文法商'):
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
