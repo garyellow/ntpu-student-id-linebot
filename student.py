@@ -92,6 +92,7 @@ def handle_message(event):
                         template=ConfirmTemplate(
                             thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
                             title='是否要查詢 ' + str(year) + ' 學年度的學生',
+                            text='請選擇模式',
                             actions=[
                                 PostbackAction(
                                     label='哪次不是',
