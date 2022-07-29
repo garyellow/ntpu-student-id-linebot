@@ -77,7 +77,7 @@ def handle_message(event):
     elif event.message.text.isdecimal() and 2 <= len(event.message.text) <= 4:
         year = int(event.message.text) if int(event.message.text) < 1911 else int(event.message.text) - 1911
 
-        if year > time.localtime(time.time()).tm_year:
+        if year > time.localtime(time.time()).tm_year - 1911:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
         elif year < 90:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼XD'))
