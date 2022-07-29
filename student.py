@@ -392,7 +392,7 @@ def handle_message(event):
         reply_message = ""
         people_cnt = 0
         for i in range(1, pages + 1):
-            # time.sleep(1)
+            time.sleep(0.1)
 
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=' + "".join(event.postback.data.split(' '))
             header = {'user-agent': UserAgent().random}
