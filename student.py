@@ -89,10 +89,9 @@ def handle_message(event):
                 TemplateSendMessage(
                     alt_text='選擇模式',
                     template=ConfirmTemplate(
-                        title='確認搜尋學年',
                         text='是否要查詢 ' + str(year) + ' 學年度的學生',
                         actions=[
-                            PostbackAction(
+                            PostbackTemplateAction(
                                 label='哪次不是',
                                 display_text='開始查詢',
                                 data='查詢全系' + str(year)
@@ -407,7 +406,7 @@ def handle_message(event):
                 reply_message += name + ' ' + number + '\n'
                 people_cnt += 1
 
-        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]]\
+        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
                          + '系總共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
