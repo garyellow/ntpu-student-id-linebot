@@ -96,11 +96,11 @@ def handle_message(event):
                                 PostbackAction(
                                     label='哪次不是',
                                     text='開始查詢',
-                                    data='查詢全系' + str(year)
+                                    data='查詢全系' + str(year),
                                 ),
                                 MessageAction(
                                     label='我在想想',
-                                    text='再啦ㄍಠ_ಠ'
+                                    text='再啦ㄍಠ_ಠ',
                                 )
                             ]
                         )
