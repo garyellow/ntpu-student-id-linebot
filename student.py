@@ -89,6 +89,7 @@ def handle_message(event):
                 TemplateSendMessage(
                     alt_text='選擇模式',
                     template=ConfirmTemplate(
+                        title='確認搜尋學年',
                         text='是否要查詢 ' + str(year) + ' 學年度的學生',
                         actions=[
                             PostbackAction(
