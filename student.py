@@ -101,7 +101,7 @@ def handle_message(event):
                                 MessageAction(
                                     label='我在想想',
                                     text='再啦ㄍಠ_ಠ',
-                                )
+                                ),
                             ],
                         )
                     )
