@@ -105,7 +105,7 @@ def handle_message(event):
                 )
             )
     elif event.message.text != '哪次不是':
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'))
 
 
 @handler.add(PostbackEvent)
@@ -207,17 +207,17 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='中國文學系',
-                            display_text='中國文學系',
+                            display_text='正在爬取' + event.postback.data.split('人文學院')[1] + '學年度中國文學系，請稍後...',
                             data=event.postback.data.split('人文學院')[1] + ' ' + department_number['中文']
                         ),
                         PostbackAction(
                             label='應用外語學系',
-                            display_text='應用外語學系',
+                            display_text='正在爬取' + event.postback.data.split('人文學院')[1] + '學年度應用外語學系，請稍後...',
                             data=event.postback.data.split('人文學院')[1] + ' ' + department_number['應外']
                         ),
                         PostbackAction(
                             label='歷史學系',
-                            display_text='歷史學系',
+                            display_text='正在爬取' + event.postback.data.split('人文學院')[1] + '學年度歷史學系，請稍後...',
                             data=event.postback.data.split('人文學院')[1] + ' ' + department_number['歷史']
                         )
                     ]
@@ -237,17 +237,17 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='法學組',
-                            display_text='法學組',
+                            display_text='正在爬取' + event.postback.data.split('法律學院')[1] + '學年度法律系法學組，請稍後...',
                             data=event.postback.data.split('法律學院')[1] + ' ' + department_number['法學']
                         ),
                         PostbackAction(
                             label='司法組',
-                            display_text='司法組',
+                            display_text='正在爬取' + event.postback.data.split('法律學院')[1] + '學年度法律系司法組，請稍後...',
                             data=event.postback.data.split('法律學院')[1] + ' ' + department_number['司法']
                         ),
                         PostbackAction(
-                            label='財法祖',
-                            display_text='財法祖',
+                            label='財法組',
+                            display_text='正在爬取' + event.postback.data.split('法律學院')[1] + '學年度法律系財法組，請稍後...',
                             data=event.postback.data.split('法律學院')[1] + ' ' + department_number['財法']
                         )
                     ]
@@ -267,22 +267,22 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='企業管理學系',
-                            display_text='企業管理學系',
+                            display_text='正在爬取' + event.postback.data.split('商學院')[1] + '學年度企業管理學系，請稍後...',
                             data=event.postback.data.split('商學院')[1] + ' ' + department_number['企管']
                         ),
                         PostbackAction(
                             label='金融與合作經濟學系',
-                            display_text='金融與合作經濟學系',
+                            display_text='正在爬取' + event.postback.data.split('商學院')[1] + '學年度金融與合作經濟學系，請稍後...',
                             data=event.postback.data.split('商學院')[1] + ' ' + department_number['金融']
                         ),
                         PostbackAction(
                             label='會計學系',
-                            display_text='會計學系',
+                            display_text='正在爬取' + event.postback.data.split('商學院')[1] + '學年度會計學系，請稍後...',
                             data=event.postback.data.split('商學院')[1] + ' ' + department_number['會計']
                         ),
                         PostbackAction(
                             label='統計學系',
-                            display_text='統計學系',
+                            display_text='正在爬取' + event.postback.data.split('商學院')[1] + '學年度統計學系，請稍後...',
                             data=event.postback.data.split('商學院')[1] + ' ' + department_number['統計']
                         )
                     ]
@@ -302,17 +302,17 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='公共行政暨政策學系',
-                            display_text='公共行政暨政策學系',
+                            display_text='正在爬取' + event.postback.data.split('公共事務學院')[1] + '學年度公共行政暨政策學系，請稍後...',
                             data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['公行']
                         ),
                         PostbackAction(
                             label='不動產與城鄉環境學系',
-                            display_text='不動產與城鄉環境學系',
+                            display_text='正在爬取' + event.postback.data.split('公共事務學院')[1] + '學年度不動產與城鄉環境學系，請稍後...',
                             data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['不動']
                         ),
                         PostbackAction(
                             label='財政學系',
-                            display_text='財政學系',
+                            display_text='正在爬取' + event.postback.data.split('公共事務學院')[1] + '學年度財政學系，請稍後...',
                             data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['財政']
                         )
                     ]
@@ -332,17 +332,17 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='經濟學系',
-                            display_text='經濟學系',
+                            display_text='正在爬取' + event.postback.data.split('社會科學學院')[1] + '學年度經濟學系，請稍後...',
                             data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['經濟']
                         ),
                         PostbackAction(
                             label='社會學系',
-                            display_text='社會學系',
+                            display_text='正在爬取' + event.postback.data.split('社會科學學院')[1] + '學年度社會學系，請稍後...',
                             data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['社學']
                         ),
                         PostbackAction(
                             label='社會工作學系',
-                            display_text='社會工作學系',
+                            display_text='正在爬取' + event.postback.data.split('社會科學學院')[1] + '學年度社會工作學系，請稍後...',
                             data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['社工']
                         )
                     ]
@@ -362,17 +362,17 @@ def handle_message(event):
                     actions=[
                         PostbackAction(
                             label='電機工程學系',
-                            display_text='電機工程學系',
+                            display_text='正在爬取' + event.postback.data.split('電機資訊學院')[1] + '學年度電機工程學系，請稍後...',
                             data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['電機']
                         ),
                         PostbackAction(
                             label='資訊工程學系',
-                            display_text='資訊工程學系',
+                            display_text='正在爬取' + event.postback.data.split('電機資訊學院')[1] + '學年度資訊工程學系，請稍後...',
                             data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['資工']
                         ),
                         PostbackAction(
                             label='通訊工程學系',
-                            display_text='通訊工程學系',
+                            display_text='正在爬取' + event.postback.data.split('電機資訊學院')[1] + '學年度通訊工程學系，請稍後...',
                             data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['通訊']
                         )
                     ]
@@ -394,7 +394,7 @@ def handle_message(event):
         for i in range(1, pages + 1):
             time.sleep(0.1)
 
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=' + "".join(event.postback.data.split(' '))
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
             header = {'user-agent': UserAgent().random}
             web = requests.get(url, headers=header)
             web.encoding = 'utf-8'
@@ -406,7 +406,7 @@ def handle_message(event):
                 reply_message += name + ' ' + number + '\n'
                 people_cnt += 1
 
-        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]]\
+        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
                          + '系總共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
