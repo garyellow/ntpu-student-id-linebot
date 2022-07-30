@@ -3,7 +3,7 @@ import time
 
 import requests
 from boto.s3.connection import S3Connection
-from bs4 import BeautifulSoup as BS4
+from bs4 import BeautifulSoup as Bs4
 from fake_useragent import UserAgent
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -60,7 +60,7 @@ def handle_message(event):
         web = requests.get(url, headers=header)
         web.encoding = 'utf-8'
 
-        html = BS4(web.text, 'html.parser')
+        html = Bs4(web.text, 'html.parser')
         name = html.find('div', {'class': 'infoPath'})
 
         if name is None:
@@ -386,7 +386,7 @@ def handle_postback(event):
         web = requests.get(url, headers=header)
         web.encoding = 'utf-8'
 
-        html = BS4(web.text, 'html.parser')
+        html = Bs4(web.text, 'html.parser')
         pages = len(html.find_all('span', {'class': 'item'})) - 1
 
         reply_message = ""
@@ -399,11 +399,11 @@ def handle_postback(event):
             web = requests.get(url, headers=header)
             web.encoding = 'utf-8'
 
-            html = BS4(web.text, 'html.parser')
+            html = Bs4(web.text, 'html.parser')
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                reply_message += name.ljust(10) + number + '\n'
+                reply_message += name.just(16) + number + '\n'
                 people_cnt += 1
 
         reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
@@ -418,12 +418,13 @@ def handle_postback(event):
 def handle_follow_join(event):
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(
-            text='''歡迎使用，輸入說明如下：
-            
-            學號 -> 姓名
-            系名 -> 系代號
-            系代號 -> 系名
-            年分 -> 全系
+            text=
+            '''歡迎使用學號查詢機器人，輸入說明如下：
+                    
+             學號  ->  姓名
+             系名  -> 系代號
+            系代號 ->  系名
+             年分  ->  全系
             
             若經過一段時間都沒有回覆
             可以嘗試再傳一次'''
