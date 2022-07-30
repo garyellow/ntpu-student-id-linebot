@@ -381,7 +381,7 @@ def handle_message(event):
         )
 
     else:
-        url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + "".join(event.postback.data.split(' '))
+        url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
         header = {'user-agent': UserAgent().random}
         web = requests.get(url, headers=header)
         web.encoding = 'utf-8'
