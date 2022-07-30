@@ -106,7 +106,11 @@ def handle_message(event):
                 )
             )
     elif event.message.text != '哪次不是':
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'))
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(
+                text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
+            )
+        )
 
 
 @handler.add(PostbackEvent)
@@ -404,7 +408,7 @@ def handle_postback(event):
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                reply_message += name.ljust(7, '－') + number + '\n'
+                reply_message += name.ljust(6, '．') + number + '\n'
                 people_cnt += 1
 
         reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
