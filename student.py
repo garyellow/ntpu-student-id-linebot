@@ -404,7 +404,7 @@ def handle_postback(event):
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                reply_message += name.ljust(5, '　') + number + '\n'
+                reply_message += name.ljust(7, '－') + number + '\n'
                 people_cnt += 1
 
         reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
@@ -422,10 +422,10 @@ def handle_follow_join(event):
             text='''歡迎使用學號查詢機器人
 輸入說明如下：
 
-  學號   ->   姓名
-  系名   -> 系代號
-系代號 ->   系名
-  年分   ->   全系
+  學號    ->    姓名
+  系名    ->  系代號
+系代號  ->    系名
+  年分    ->    全系
 
 若經過一段時間都沒有回覆
 可以嘗試再傳一次'''
