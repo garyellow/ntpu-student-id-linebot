@@ -109,7 +109,7 @@ def handle_message(event):
 
 
 @handler.add(PostbackEvent)
-def handle_message(event):
+def handle_postback(event):
     if event.postback.data.startswith('查詢全系'):
         line_bot_api.reply_message(
             event.reply_token,
@@ -403,13 +403,32 @@ def handle_message(event):
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                reply_message += name + ' ' + number + '\n'
+                reply_message += name.ljust(10) + number + '\n'
                 people_cnt += 1
 
         reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
                          + '系總共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
+
+
+@handler.add(FollowEvent)
+@handler.add(JoinEvent)
+@handler.add(MemberJoinedEvent)
+def handle_follow_join(event):
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(
+            text='''歡迎使用，輸入說明如下：
+            
+            學號 -> 姓名
+            系名 -> 系代號
+            系代號 -> 系名
+            年分 -> 全系
+            
+            若經過一段時間都沒有回覆
+            可以嘗試再傳一次'''
+        )
+    )
 
 
 if __name__ == '__main__':
