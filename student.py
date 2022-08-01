@@ -56,7 +56,10 @@ def callback():
 @handler.add(MessageEvent)
 def handle_message(event):
     if event.message.text.isdecimal():
-        if event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
+        if event.message.text in department_name.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
+
+        elif event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + event.message.text
             header = {'user-agent': UserAgent().random}
             web = requests.get(url, headers=header)
@@ -76,7 +79,7 @@ def handle_message(event):
             if year > time.localtime(time.time()).tm_year - 1911:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
             elif year < 90:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼XD'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼~~'))
             elif year < 95:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'))
             else:
@@ -100,12 +103,8 @@ def handle_message(event):
                         )
                     )
                 )
-    else:
-        if event.message.text.strip('系') in department_number.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
-
-        elif event.message.text in department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
+    elif event.message.text.strip('系') in department_number.keys():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
 
 
 @handler.add(PostbackEvent)
