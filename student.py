@@ -5,7 +5,6 @@ import time
 import requests
 from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup as Bs4
-from fake_useragent import UserAgent
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -61,8 +60,7 @@ def handle_message(event):
 
         elif event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + event.message.text
-            header = {'user-agent': UserAgent().random}
-            web = requests.get(url, headers=header)
+            web = requests.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -387,8 +385,7 @@ def handle_postback(event):
 
     else:
         url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
-        header = {'user-agent': UserAgent().random}
-        web = requests.get(url, headers=header)
+        web = requests.get(url)
         web.encoding = 'utf-8'
 
         html = Bs4(web.text, 'html.parser')
@@ -400,8 +397,7 @@ def handle_postback(event):
             time.sleep(0.1)
 
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
-            header = {'user-agent': UserAgent().random}
-            web = requests.get(url, headers=header)
+            web = requests.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
