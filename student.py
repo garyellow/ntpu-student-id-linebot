@@ -369,7 +369,6 @@ def handle_postback(event):
                         ),
                         PostbackAction(
                             label='資訊工程學系',
-                            inputOption='closeRichMenu',
                             display_text='正在爬取資工系(' + event.postback.data.split('電機資訊學院')[1] + ')，請稍後...',
                             data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['資工']
                         ),
