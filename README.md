@@ -1,6 +1,6 @@
 # ntpu-student-id-linebot
 a line bot about student id  
-[Line Bot Link](https://line.me/R/ti/p/@148wrcch)
+[Line Bot Link](https://lin.ee/QiMmPBv)
 
 ## 使用方式
 1. 輸入**學號**獲取**學生姓名**
