@@ -55,20 +55,7 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    if event.message.text == '使用說明':
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(
-                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
-            )
-        )
-
-    elif event.message.text.strip('系') in department_number.keys():
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
-
-    elif event.message.text in department_name.keys():
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
-
-    elif event.message.text.isdecimal():
+    if event.message.text.isdecimal():
         if event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + event.message.text
             header = {'user-agent': UserAgent().random}
@@ -103,6 +90,7 @@ def handle_message(event):
                                 PostbackAction(
                                     label='哪次不是',
                                     text='哪次不是',
+                                    inputOption='closeRichMenu',
                                     data='查詢全系' + str(year)
                                 ),
                                 MessageAction(
@@ -113,11 +101,24 @@ def handle_message(event):
                         )
                     )
                 )
+    else:
+        if event.message.text.strip('系') in department_number.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
+
+        elif event.message.text in department_name.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
 
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
-    if event.postback.data.startswith('查詢全系'):
+    if event.message.text == '使用說明':
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(
+                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
+            )
+        )
+
+    elif event.postback.data.startswith('查詢全系'):
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
