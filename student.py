@@ -55,19 +55,12 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    if event.message.text.isdecimal() and event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
-        url = 'https://lms.ntpu.edu.tw/' + event.message.text
-        header = {'user-agent': UserAgent().random}
-        web = requests.get(url, headers=header)
-        web.encoding = 'utf-8'
-
-        html = Bs4(web.text, 'html.parser')
-        name = html.find('div', {'class': 'infoPath'})
-
-        if name is None:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
-        else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
+    if event.message.text == '使用說明':
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(
+                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
+            )
+        )
 
     elif event.message.text.strip('系') in department_number.keys():
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
@@ -75,42 +68,51 @@ def handle_message(event):
     elif event.message.text in department_name.keys():
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
 
-    elif event.message.text.isdecimal() and 2 <= len(event.message.text) <= 4:
-        year = int(event.message.text) if int(event.message.text) < 1911 else int(event.message.text) - 1911
+    elif event.message.text.isdecimal():
+        if event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
+            url = 'https://lms.ntpu.edu.tw/' + event.message.text
+            header = {'user-agent': UserAgent().random}
+            web = requests.get(url, headers=header)
+            web.encoding = 'utf-8'
 
-        if year > time.localtime(time.time()).tm_year - 1911:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
-        elif year < 90:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼XD'))
-        elif year < 95:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'))
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TemplateSendMessage(
-                    alt_text='確認學年度',
-                    template=ConfirmTemplate(
-                        text='是否要查詢 ' + str(year) + ' 學年度的學生',
-                        actions=[
-                            PostbackAction(
-                                label='哪次不是',
-                                text='哪次不是',
-                                data='查詢全系' + str(year)
-                            ),
-                            MessageAction(
-                                label='我在想想',
-                                text='再啦ㄍಠ_ಠ'
-                            )
-                        ]
+            html = Bs4(web.text, 'html.parser')
+            name = html.find('div', {'class': 'infoPath'})
+
+            if name is None:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
+            else:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
+
+        elif 2 <= len(event.message.text) <= 4:
+            year = int(event.message.text) if int(event.message.text) < 1911 else int(event.message.text) - 1911
+
+            if year > time.localtime(time.time()).tm_year - 1911:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
+            elif year < 90:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼XD'))
+            elif year < 95:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'))
+            else:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TemplateSendMessage(
+                        alt_text='確認學年度',
+                        template=ConfirmTemplate(
+                            text='是否要查詢 ' + str(year) + ' 學年度的學生',
+                            actions=[
+                                PostbackAction(
+                                    label='哪次不是',
+                                    text='哪次不是',
+                                    data='查詢全系' + str(year)
+                                ),
+                                MessageAction(
+                                    label='我在想想',
+                                    text='再啦ㄍಠ_ಠ'
+                                )
+                            ]
+                        )
                     )
                 )
-            )
-    elif event.message.text != '哪次不是':
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(
-                text='學號 -> 姓名\n系名 -> 系代號\n系代號 -> 系名\n年分 -> 全系\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
-            )
-        )
 
 
 @handler.add(PostbackEvent)
@@ -146,7 +148,6 @@ def handle_postback(event):
             TemplateSendMessage(
                 alt_text='選擇學院',
                 template=ButtonsTemplate(
-                    # thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
                     title='選擇學院',
                     text='請選擇科系所屬學院',
                     actions=[
@@ -176,7 +177,6 @@ def handle_postback(event):
             TemplateSendMessage(
                 alt_text='選擇學院',
                 template=ButtonsTemplate(
-                    # thumbnail_image_url='https://new.ntpu.edu.tw/assets/logo/ntpu_logo.png',
                     title='選擇學院',
                     text='請選擇科系所屬學院',
                     actions=[
@@ -424,7 +424,7 @@ def handle_follow_join(event):
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(
             text='''歡迎使用學號查詢機器人
-輸入說明如下：
+輸入輸出對應如下：
 
   學號    ->    姓名
   系名    ->  系代號
