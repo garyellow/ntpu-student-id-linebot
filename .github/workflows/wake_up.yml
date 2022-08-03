@@ -11,4 +11,4 @@ jobs:
       - name: HTTP Status
         uses: lakuapik/gh-actions-http-status@v1
         with:
-          sites: '["https://ntpu-id.herokuapp.com/callback"]'
+          sites: 'https://ntpu-id.herokuapp.com/'
