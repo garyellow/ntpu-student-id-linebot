@@ -1,15 +1,16 @@
 name: Wake Bot
 on:
   schedule: 
-    - cron: '*/20 16-23,0-6 * * 1-5'
-    - cron: '*/20 17-23,0-1 * * 0,6'
+    - cron: '*/20 0-14 * * 1-5'
+    - cron: '*/20 1-9 * * 0,6'
   workflow_dispatch:
       
 jobs:
   wake-up:
     runs-on: ubuntu-latest
     steps:
-      - name: HTTP Status
-        uses: lakuapik/gh-actions-http-status@v1
+      - name: HTTP request
+        uses: satak/webrequest-action@master
         with:
-          sites: 'https://ntpu-id.herokuapp.com/'
+          url: https://ntpu-id.herokuapp.com/
+          method: GET
