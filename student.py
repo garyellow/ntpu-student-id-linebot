@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import string
 import time
 
 import requests
@@ -54,12 +55,14 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    if event.message.text.isdecimal():
-        if event.message.text in department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[event.message.text] + '系'))
+    text = "".join(x for x in event.message.text if x not in string.whitespace + string.punctuation)
 
-        elif event.message.text[0] == '4' and 8 <= len(event.message.text) <= 9:
-            url = 'https://lms.ntpu.edu.tw/' + event.message.text
+    if text.isdecimal():
+        if text in department_name.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[text] + '系'))
+
+        elif text[0] == '4' and 8 <= len(text) <= 9:
+            url = 'https://lms.ntpu.edu.tw/' + text
             web = requests.get(url)
             web.encoding = 'utf-8'
 
@@ -67,12 +70,12 @@ def handle_message(event):
             name = html.find('div', {'class': 'infoPath'})
 
             if name is None:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + event.message.text + '不存在'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + text + '不存在'))
             else:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
 
-        elif 2 <= len(event.message.text) <= 4:
-            year = int(event.message.text) if int(event.message.text) < 1911 else int(event.message.text) - 1911
+        elif 2 <= len(text) <= 4:
+            year = int(text) if int(text) < 1911 else int(text) - 1911
 
             if year > time.localtime(time.time()).tm_year - 1911:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
@@ -101,8 +104,8 @@ def handle_message(event):
                         )
                     )
                 )
-    elif event.message.text.strip('系') in department_number.keys():
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[event.message.text.strip('系')]))
+    elif text.strip('系') in department_number.keys():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[text.strip('系')]))
 
 
 @handler.add(PostbackEvent)
