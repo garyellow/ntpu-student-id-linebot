@@ -1,0 +1,15 @@
+on:
+  schedule: 
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+      
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: HTTP Status
+        uses: lakuapik/gh-actions-http-status@v1
+        with:
+          sites: '["https://ntpu-id.herokuapp.com/callback"]'
