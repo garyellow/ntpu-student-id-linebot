@@ -1,0 +1,12 @@
+name: Wake Bot
+on:
+  schedule: 
+    - cron: '*/20 0-11 * * 1-5'
+  workflow_dispatch:
+      
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    steps:
+      - name: HTTP request
+        run: curl https://ntpu-id.herokuapp.com/
