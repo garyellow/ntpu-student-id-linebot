@@ -10,7 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: HTTP request
-        uses: satak/webrequest-action@master
-        with:
-          url: https://ntpu-id.herokuapp.com/
-          method: GET
+        run: curl https://ntpu-id.herokuapp.com/
