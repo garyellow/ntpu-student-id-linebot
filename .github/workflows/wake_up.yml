@@ -7,8 +7,6 @@ on:
 jobs:
   wake-up:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: HTTP Status
         uses: lakuapik/gh-actions-http-status@v1
