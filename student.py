@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import random
 import string
 import time
 
@@ -104,6 +105,7 @@ def handle_message(event):
                         )
                     )
                 )
+
     elif text.strip('系') in department_number.keys():
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[text.strip('系')]))
 
@@ -396,7 +398,7 @@ def handle_postback(event):
         reply_message = ""
         people_cnt = 0
         for i in range(1, pages + 1):
-            time.sleep(0.1)
+            time.sleep(random.uniform(0.05, 0.1))
 
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
             web = requests.get(url)
