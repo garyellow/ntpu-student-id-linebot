@@ -95,9 +95,11 @@ def handle_message(event):
                                     data='查詢全系' + str(year),
                                     input_option="closeRichMenu"
                                 ),
-                                MessageAction(
+                                PostbackAction(
                                     label='我在想想',
-                                    text='再啦ㄍಠ_ಠ'
+                                    display_text='再啦ㄍಠ_ಠ',
+                                    data='兇',
+                                    input_option="openKeyboard"
                                 )
                             ]
                         )
@@ -116,6 +118,9 @@ def handle_postback(event):
                 text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
             )
         )
+
+    elif event.postback.data == '兇':
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='泥好兇喔~இ௰இ'))
 
     elif event.postback.data.startswith('查詢全系'):
         line_bot_api.reply_message(
