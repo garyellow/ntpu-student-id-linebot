@@ -41,22 +41,6 @@ line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET'])
 
 
-async def get_page_data(client, url):
-    web = await client.get(url)
-    web.encoding = 'utf-8'
-    html = await Bs4(web.text, 'html.parser')
-
-    reply_message = ''
-    student_cnt = 0
-    for item in html.find_all('div', {'class': 'bloglistTitle'}):
-        name = await item.find('a').text
-        number = await item.find('a').get('href').split('/')[-1]
-        reply_message += name.ljust(6, '．') + number + '\n'
-        student_cnt += 1
-
-    return reply_message, student_cnt
-
-
 @app.route('/callback', methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -412,17 +396,33 @@ async def handle_postback(event):
             html = await Bs4(web.text, 'html.parser')
             pages = len(html.find_all('span', {'class': 'item'})) - 1
 
+            reply_message = ''
+            student_cnt = 0
+
+            async def get_page_data(client, url_):
+                web_ = await client.get(url_)
+                web_.encoding = 'utf-8'
+                html_ = await Bs4(web_.text, 'html.parser')
+
+                temp_message = ''
+                temp_cnt = 0
+                for item in html_.find_all('div', {'class': 'bloglistTitle'}):
+                    name = await item.find('a').text
+                    number = await item.find('a').get('href').split('/')[-1]
+                    temp_message += name.ljust(6, '．') + number + '\n'
+                    temp_cnt += 1
+
+                return temp_message, temp_cnt
+
             tasks = []
             for i in range(1, pages + 1):
-                time.sleep(0.01)
+                await asyncio.sleep(0.01)
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(
                     event.postback.data.split(' '))
                 tasks.append(asyncio.create_task(get_page_data(c, url)))
 
             all_task = await asyncio.gather(*tasks)
 
-            reply_message = ''
-            student_cnt = 0
             for task in all_task:
                 reply_message += task.result()[0]
                 student_cnt += task.result()[1]
