@@ -34,7 +34,6 @@ department_number = {
 
 department_name = {v: k for k, v in department_number.items()}
 
-# s3 = S3Connection(os.environ['LINE_CHANNEL_ACCESS_TOKEN'], os.environ['LINE_CHANNEL_SECRET'])
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
 
