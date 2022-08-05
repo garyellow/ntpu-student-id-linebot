@@ -48,7 +48,7 @@ def callback():
     app.logger.info('Request body: ' + body)
 
     try:
-        asyncio.run(handler.handle(body, signature))
+        handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
     return 'OK'
