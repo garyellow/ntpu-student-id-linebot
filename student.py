@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
-import asyncio
 import os
+import random
 import string
 import time
 
-import httpx
+import requests
 from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup as Bs4
 from flask import Flask, request, abort
@@ -64,7 +64,7 @@ def handle_message(event):
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + text
-            web = httpx.get(url)
+            web = requests.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -388,6 +388,7 @@ async def handle_postback(event):
         )
 
     else:
+<<<<<<< HEAD
         async with httpx.Client() as c:
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
             web = await c.get(url)
@@ -431,6 +432,35 @@ async def handle_postback(event):
                              + '系總共有' + str(student_cnt) + '位學生'
 
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
+=======
+        url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
+        web = requests.get(url)
+        web.encoding = 'utf-8'
+
+        html = Bs4(web.text, 'html.parser')
+        pages = len(html.find_all('span', {'class': 'item'})) - 1
+
+        reply_message = ""
+        people_cnt = 0
+        for i in range(1, pages + 1):
+            time.sleep(random.uniform(0.05, 0.1))
+
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
+            web = requests.get(url)
+            web.encoding = 'utf-8'
+
+            html = Bs4(web.text, 'html.parser')
+            for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                name = item.find('a').text
+                number = item.find('a').get('href').split('/')[-1]
+                reply_message += name.ljust(6, '．') + number + '\n'
+                people_cnt += 1
+
+        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
+                         + '系總共有' + str(people_cnt) + '位學生'
+
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
+>>>>>>> parent of 48febb2 (Change requests to httpx and update some function to async)
 
 
 @handler.add(FollowEvent)
