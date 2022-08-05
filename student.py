@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import os
-import random
 import string
 import time
 
@@ -388,79 +387,35 @@ async def handle_postback(event):
         )
 
     else:
-<<<<<<< HEAD
-        async with httpx.Client() as c:
+        with requests.Session() as s:
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
-            web = await c.get(url)
-            web.encoding = 'utf-8'
-
-            html = await Bs4(web.text, 'html.parser')
-            pages = len(html.find_all('span', {'class': 'item'})) - 1
-
-            reply_message = ''
-            student_cnt = 0
-
-            async def get_page_data(client, url_):
-                web_ = await client.get(url_)
-                web_.encoding = 'utf-8'
-                html_ = await Bs4(web_.text, 'html.parser')
-
-                temp_message = ''
-                temp_cnt = 0
-                for item in html_.find_all('div', {'class': 'bloglistTitle'}):
-                    name = await item.find('a').text
-                    number = await item.find('a').get('href').split('/')[-1]
-                    temp_message += name.ljust(6, '．') + number + '\n'
-                    temp_cnt += 1
-
-                return temp_message, temp_cnt
-
-            tasks = []
-            for i in range(1, pages + 1):
-                await asyncio.sleep(0.01)
-                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(
-                    event.postback.data.split(' '))
-                tasks.append(asyncio.create_task(get_page_data(c, url)))
-
-            all_task = await asyncio.gather(*tasks)
-
-            for task in all_task:
-                reply_message += task.result()[0]
-                student_cnt += task.result()[1]
-
-            reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
-                             + '系總共有' + str(student_cnt) + '位學生'
-
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
-=======
-        url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
-        web = requests.get(url)
-        web.encoding = 'utf-8'
-
-        html = Bs4(web.text, 'html.parser')
-        pages = len(html.find_all('span', {'class': 'item'})) - 1
-
-        reply_message = ""
-        people_cnt = 0
-        for i in range(1, pages + 1):
-            time.sleep(random.uniform(0.05, 0.1))
-
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
-            web = requests.get(url)
+            web = s.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
-            for item in html.find_all('div', {'class': 'bloglistTitle'}):
-                name = item.find('a').text
-                number = item.find('a').get('href').split('/')[-1]
-                reply_message += name.ljust(6, '．') + number + '\n'
-                people_cnt += 1
+            pages = len(html.find_all('span', {'class': 'item'})) - 1
+
+            reply_message = ""
+            people_cnt = 0
+            for i in range(1, pages + 1):
+                time.sleep(0.05)
+
+                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(
+                    event.postback.data.split(' '))
+                web = s.get(url)
+                web.encoding = 'utf-8'
+
+                html = Bs4(web.text, 'html.parser')
+                for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                    name = item.find('a').text
+                    number = item.find('a').get('href').split('/')[-1]
+                    reply_message += name.ljust(6, '．') + number + '\n'
+                    people_cnt += 1
 
         reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
                          + '系總共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
->>>>>>> parent of 48febb2 (Change requests to httpx and update some function to async)
 
 
 @handler.add(FollowEvent)
