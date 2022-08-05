@@ -127,7 +127,7 @@ def handle_message(event):
 
 
 @handler.add(PostbackEvent)
-def handle_postback(event):
+async def handle_postback(event):
     if event.postback.data == '使用說明':
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(
