@@ -1,1 +1,1 @@
-web: python3 student.py
+web: gunicorn student:app -preload
