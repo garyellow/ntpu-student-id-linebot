@@ -91,8 +91,9 @@ def handle_message(event):
                             actions=[
                                 PostbackAction(
                                     label='哪次不是',
-                                    text='哪次不是',
-                                    data='查詢全系' + str(year)
+                                    display_text='哪次不是',
+                                    data='查詢全系' + str(year),
+                                    input_option="closeRichMenu"
                                 ),
                                 MessageAction(
                                     label='我在想想',
