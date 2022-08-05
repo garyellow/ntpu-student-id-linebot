@@ -1,1 +1,1 @@
-web: gunicorn app:student -preload
+web: gunicorn -b :$PORT app:student -preload
