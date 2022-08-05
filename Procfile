@@ -1,1 +1,1 @@
-web: gunicorn app_core:student -preload
+web: gunicorn app:student -preload
