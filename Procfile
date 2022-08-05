@@ -1,1 +1,1 @@
-web: gunicorn -b :$PORT --workers=5 --threads=2 student:app -preload
+web: gunicorn -b :$PORT --workers=2 --threads=4 student:app -preload
