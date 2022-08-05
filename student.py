@@ -129,14 +129,14 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 async def handle_postback(event):
     if event.postback.data == '使用說明':
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token, TextSendMessage(
                 text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單\n\n若經過一段時間都沒有回覆\n可以嘗試再傳一次'
             )
         )
 
     elif event.postback.data.startswith('查詢全系'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇學院群',
@@ -161,7 +161,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('文法商'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇學院',
@@ -190,7 +190,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('公社電資'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇學院',
@@ -219,7 +219,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('人文學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇科系',
@@ -249,7 +249,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('法律學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇組別',
@@ -279,7 +279,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('商學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇科系',
@@ -314,7 +314,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('公共事務學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇科系',
@@ -344,7 +344,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('社會科學學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇科系',
@@ -374,7 +374,7 @@ async def handle_postback(event):
         )
 
     elif event.postback.data.startswith('電機資訊學院'):
-        line_bot_api.reply_message(
+        await line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
                 alt_text='選擇科系',
@@ -406,10 +406,10 @@ async def handle_postback(event):
     else:
         async with httpx.Client() as c:
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
-            web = c.get(url)
+            web = await c.get(url)
             web.encoding = 'utf-8'
 
-            html = Bs4(web.text, 'html.parser')
+            html = await Bs4(web.text, 'html.parser')
             pages = len(html.find_all('span', {'class': 'item'})) - 1
 
             tasks = []
