@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
+import asyncio
 import os
-import random
 import string
 import time
 
-import requests
+import httpx
 from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup as Bs4
 from flask import Flask, request, abort
@@ -41,6 +41,22 @@ line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET'])
 
 
+async def get_page_data(client, url):
+    web = await client.get(url)
+    web.encoding = 'utf-8'
+    html = await Bs4(web.text, 'html.parser')
+
+    reply_message = ''
+    student_cnt = 0
+    for item in html.find_all('div', {'class': 'bloglistTitle'}):
+        name = await item.find('a').text
+        number = await item.find('a').get('href').split('/')[-1]
+        reply_message += name.ljust(6, '．') + number + '\n'
+        student_cnt += 1
+
+    return reply_message, student_cnt
+
+
 @app.route('/callback', methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -64,7 +80,7 @@ def handle_message(event):
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + text
-            web = requests.get(url)
+            web = httpx.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -388,33 +404,33 @@ def handle_postback(event):
         )
 
     else:
-        url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
-        web = requests.get(url)
-        web.encoding = 'utf-8'
-
-        html = Bs4(web.text, 'html.parser')
-        pages = len(html.find_all('span', {'class': 'item'})) - 1
-
-        reply_message = ""
-        people_cnt = 0
-        for i in range(1, pages + 1):
-            time.sleep(random.uniform(0.05, 0.1))
-
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(event.postback.data.split(' '))
-            web = requests.get(url)
+        async with httpx.Client() as c:
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
+            web = c.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
-            for item in html.find_all('div', {'class': 'bloglistTitle'}):
-                name = item.find('a').text
-                number = item.find('a').get('href').split('/')[-1]
-                reply_message += name.ljust(6, '．') + number + '\n'
-                people_cnt += 1
+            pages = len(html.find_all('span', {'class': 'item'})) - 1
 
-        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
-                         + '系總共有' + str(people_cnt) + '位學生'
+            tasks = []
+            for i in range(1, pages + 1):
+                time.sleep(0.01)
+                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(
+                    event.postback.data.split(' '))
+                tasks.append(asyncio.create_task(get_page_data(c, url)))
 
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
+            all_task = await asyncio.gather(*tasks)
+
+            reply_message = ''
+            student_cnt = 0
+            for task in all_task:
+                reply_message += task.result()[0]
+                student_cnt += task.result()[1]
+
+            reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
+                             + '系總共有' + str(student_cnt) + '位學生'
+
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
 
 
 @handler.add(FollowEvent)
