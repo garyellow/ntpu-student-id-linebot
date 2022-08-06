@@ -32,6 +32,26 @@ department_number = {
     '電機': '87'
 }
 
+all_department_number = {
+    '法律學系': '71', '法學組': '712', '司法組': '714', '財經法組': '716',
+    '公共行政暨政策學系': '72',
+    '經濟學系': '73',
+    '社會學系': '742', '社會工作學系': '744',
+    '財政學系': '75',
+    '不動產與城鄉環境學系': '76',
+    '會計學系': '77',
+    '統計學系': '78',
+    '企業管理學系': '79',
+    '金融與合作經濟學系': '80',
+    '中國文學系': '81',
+    '應用外語學系': '82',
+    '歷史學系': '83',
+    '休閒運動管理學系': '84',
+    '資訊工程學系': '85',
+    '通訊工程學系': '86',
+    '電機工程學系': '87'
+}
+
 department_name = {v: k for k, v in department_number.items()}
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
@@ -111,8 +131,27 @@ def handle_message(event):
                     )
                 )
 
+    elif text == '所有系代碼':
+        message = ''.join([department_name[x] + '系 -> ' + x + '\n' for x in department_number.keys()])
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
+
     elif text.strip('系') in department_number.keys():
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_number[text.strip('系')]))
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=department_number[text.strip('系')],
+                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))])
+            )
+        )
+
+    elif text in all_department_number.keys():
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=all_department_number[text],
+                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))])
+            )
+        )
 
 
 @handler.add(PostbackEvent)
@@ -266,7 +305,7 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
-                            label='財法組',
+                            label='財經法組',
                             display_text='正在爬取法律系財法組(' + event.postback.data.split('法律學院')[1] + ')，請稍後...',
                             data=event.postback.data.split('法律學院')[1] + ' ' + department_number['財法'],
                             input_option='closeRichMenu'
@@ -284,7 +323,13 @@ def handle_postback(event):
                 template=ButtonsTemplate(
                     thumbnail_image_url='https://walkinto.in/upload/ZJum7EYwPUZkedmXNtvPL.JPG',
                     title='選擇科系',
-                    text='請選擇科系',
+                    text='請選擇科系 (休運系請直接點圖片)',
+                    default_action=PostbackAction(
+                        label='休閒運動管理學系',
+                        display_text='正在爬取休運系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
+                        data=event.postback.data.split('商學院')[1] + ' ' + department_number['休運'],
+                        input_option='closeRichMenu'
+                    ),
                     actions=[
                         PostbackAction(
                             label='企業管理學系',
@@ -423,7 +468,7 @@ def handle_postback(event):
             html = Bs4(web.text, 'html.parser')
             pages = len(html.find_all('span', {'class': 'item'})) - 1
 
-            reply_message = ""
+            message = ""
             people_cnt = 0
             for i in range(1, pages + 1):
                 time.sleep(0.05)
@@ -437,13 +482,13 @@ def handle_postback(event):
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
-                    reply_message += name.ljust(6, '．') + number + '\n'
+                    message += name.ljust(6, '．') + number + '\n'
                     people_cnt += 1
 
-        reply_message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
-                         + '系總共有' + str(people_cnt) + '位學生'
+        message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
+                   + '系總共有' + str(people_cnt) + '位學生'
 
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
 
 
 @handler.add(FollowEvent)
