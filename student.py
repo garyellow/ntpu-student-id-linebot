@@ -5,7 +5,7 @@ import time
 
 import requests
 from bs4 import BeautifulSoup as Bs4
-from flask import Flask, request, abort
+from flask import Flask, request, abort, redirect
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
@@ -36,6 +36,11 @@ department_name = {v: k for k, v in department_number.items()}
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
+
+
+@app.route('/')
+def github():
+    return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
 
 @app.route('/callback', methods=['POST'])
