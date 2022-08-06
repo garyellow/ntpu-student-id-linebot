@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: HTTP request
-        run: curl https://ntpu-id.onrender.com/
+        run: curl -L https://ntpu-id.onrender.com/
