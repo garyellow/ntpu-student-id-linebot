@@ -452,16 +452,11 @@ def handle_postback(event):
 def handle_follow_join(event):
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(
-            text='''歡迎使用學號查詢機器人
-輸入輸出對應如下：
+            text='''泥好~~我是學號姓名查詢機器人🤖
+可以用學號查詢到學生姓名
+要看使用說明可以點選下方選單
 
-  學號    ->    姓名
-  系名    ->  系代號
-系代號  ->    系名
-  年分    ->    全系
-
-若經過一段時間都沒有回覆
-可以嘗試再傳一次'''
+資料來源為：國立臺北大學數位學苑2.0'''
         )
     )
 
