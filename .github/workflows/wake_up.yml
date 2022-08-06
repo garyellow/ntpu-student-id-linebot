@@ -1,7 +1,7 @@
 name: Wake Bot
 on:
   schedule:
-    - cron: "*/6 0-14 * * *"
+    - cron: "*/15 0-14 * * *"
   workflow_dispatch:
       
 jobs:
