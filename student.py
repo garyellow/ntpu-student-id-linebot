@@ -132,7 +132,7 @@ def handle_message(event):
                 )
 
     elif text == '所有系代碼':
-        message = ''.join([x + '系 -> ' + department_number[x] + '\n' for x in department_number.keys()])
+        message = '\n'.join([x[0] + '系 -> ' + x[1] for x in department_number.items()])
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
 
     elif text.strip('系') in department_number.keys():
