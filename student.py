@@ -64,7 +64,7 @@ def github():
 
 
 @app.route('/check')
-def github():
+def check():
     return 'OK'
 
 
