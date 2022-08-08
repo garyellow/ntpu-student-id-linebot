@@ -82,7 +82,7 @@ def handle_message(event):
     text = "".join(x for x in event.message.text if x not in string.whitespace + string.punctuation)
 
     if text.isdecimal():
-        if text in full_department_number.keys():
+        if text in full_department_name.keys():
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=full_department_name[text] + '系'))
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
