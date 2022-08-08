@@ -179,8 +179,18 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    text = "".join(x for x in event.message.text if x not in string.whitespace + string.punctuation)
+    if event.message.type != 'text':
+        img = random.choice(random.choice(sticker))
+        line_bot_api.reply_message(
+            event.reply_token, ImageSendMessage(
+                original_content_url=img,
+                preview_image_url=img,
+                sender=Sender(icon_url=random.choice(random.choice(sticker)))
+            )
+        )
+        return
 
+    text = ''.join(x for x in event.message.text if x not in string.whitespace + string.punctuation)
     if text.isdecimal():
         if text in full_department_name.keys():
             line_bot_api.reply_message(
@@ -692,18 +702,6 @@ def handle_follow_join(event):
 
 資料來源：國立臺北大學數位學苑2.0''',
             sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
-        )
-    )
-
-
-@handler.default()
-def default(event):
-    img = random.choice(random.choice(sticker))
-    line_bot_api.reply_message(
-        event.reply_token, ImageSendMessage(
-            original_content_url=img,
-            preview_image_url=img,
-            sender=Sender(icon_url=random.choice(random.choice(sticker)))
         )
     )
 
