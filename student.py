@@ -180,7 +180,7 @@ def callback():
 @handler.add(MessageEvent)
 def handle_message(event):
     if event.message.type != 'text':
-        img = random.choice(random.choice(sticker)[-1])
+        img = random.choice(random.choice(list(sticker.values())))
         line_bot_api.reply_message(
             event.reply_token, ImageSendMessage(
                 original_content_url=img,
