@@ -651,19 +651,19 @@ def handle_postback(event):
 
     else:
         with requests.Session() as s:
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + "".join(event.postback.data.split(' '))
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + ''.join(event.postback.data.split(' '))
             web = s.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
             pages = len(html.find_all('span', {'class': 'item'})) - 1
 
-            message = ""
+            message = ''
             people_cnt = 0
             for i in range(1, pages + 1):
                 time.sleep(0.05)
 
-                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + "".join(
+                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + ''.join(
                     event.postback.data.split(' '))
                 web = s.get(url)
                 web.encoding = 'utf-8'
