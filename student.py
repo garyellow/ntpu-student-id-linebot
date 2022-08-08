@@ -102,11 +102,11 @@ def handle_message(event):
                 if department in [department_number['法律'], department_number['社學'][0:2]]:
                     department += text[over_hun + 5]
 
-                if department == department_number['法律']:
-                    show_label = '查詢' + year + '學年度法律系' + department_name[department] + '組的所有學生'
+                if department[0:2] == department_number['法律']:
+                    show_label = '搜尋' + year + '學年度法律系' + department_name[department] + '組的所有學生'
                     show_text = '正在爬取法律系' + department_name[department] + '組(' + year + ')，請稍後...'
                 else:
-                    show_label = '查詢' + year + '學年度' + department_name[department] + '系的所有學生'
+                    show_label = '搜尋' + year + '學年度' + department_name[department] + '系的所有學生'
                     show_text = '正在爬取' + department_name[department] + '系(' + year + ')，請稍後...'
 
                 line_bot_api.reply_message(
@@ -143,12 +143,12 @@ def handle_message(event):
                     TemplateSendMessage(
                         alt_text='確認學年度',
                         template=ConfirmTemplate(
-                            text='是否要查詢 ' + str(year) + ' 學年度的學生',
+                            text='是否要搜尋 ' + str(year) + ' 學年度的學生',
                             actions=[
                                 PostbackAction(
                                     label='哪次不是',
                                     display_text='哪次不是',
-                                    data='查詢全系' + str(year),
+                                    data='搜尋全系' + str(year),
                                     input_option='openRichMenu'
                                 ),
                                 PostbackAction(
@@ -197,7 +197,7 @@ def handle_postback(event):
     elif event.postback.data == '兇':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='泥好兇喔~~இ௰இ'))
 
-    elif event.postback.data.startswith('查詢全系'):
+    elif event.postback.data.startswith('搜尋全系'):
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -210,12 +210,12 @@ def handle_postback(event):
                         PostbackAction(
                             label='文法商',
                             display_text='文法商',
-                            data='文法商' + event.postback.data.split('查詢全系')[1]
+                            data='文法商' + event.postback.data.split('搜尋全系')[1]
                         ),
                         PostbackAction(
                             label='公社電資',
                             display_text='公社電資',
-                            data='公社電資' + event.postback.data.split('查詢全系')[1]
+                            data='公社電資' + event.postback.data.split('搜尋全系')[1]
                         )
                     ]
                 )
@@ -516,8 +516,12 @@ def handle_postback(event):
                     message += name.ljust(6, '．') + number + '\n'
                     people_cnt += 1
 
-        message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
-                   + '系總共有' + str(people_cnt) + '位學生'
+        if event.postback.data.split(' ')[1][0:2] == department_number['法律']:
+            message += '\n' + event.postback.data.split(' ')[0] + '學年度法律系' + department_name[event.postback.data.split(' ')[1]] \
+                       + '組共有' + str(people_cnt) + '位學生'
+        else:
+            message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
+                       + '系共有' + str(people_cnt) + '位學生'
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
 
