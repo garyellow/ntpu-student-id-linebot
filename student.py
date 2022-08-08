@@ -83,7 +83,7 @@ def handle_message(event):
 
     if text.isdecimal():
         if text in full_department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=full_department_name[text] + '系'))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=full_department_name[text]))
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + text
