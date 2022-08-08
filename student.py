@@ -32,7 +32,7 @@ department_number = {
     '電機': '87'
 }
 
-all_department_number = {
+full_department_number = {
     '法律學系': '71', '法學組': '712', '司法組': '714', '財經法組': '716',
     '公共行政暨政策學系': '72',
     '經濟學系': '73',
@@ -53,6 +53,7 @@ all_department_number = {
 }
 
 department_name = {v: k for k, v in department_number.items()}
+full_department_name = {v: k for k, v in full_department_number.items()}
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
@@ -81,8 +82,8 @@ def handle_message(event):
     text = "".join(x for x in event.message.text if x not in string.whitespace + string.punctuation)
 
     if text.isdecimal():
-        if text in department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=department_name[text] + '系'))
+        if text in full_department_number.keys():
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=full_department_name[text] + '系'))
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + text
@@ -173,11 +174,11 @@ def handle_message(event):
             )
         )
 
-    elif text in all_department_number.keys():
+    elif text in full_department_number.keys():
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text=all_department_number[text],
+                text=full_department_number[text],
                 quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))])
             )
         )
