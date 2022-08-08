@@ -103,11 +103,9 @@ def handle_message(event):
                     department += text[over_hun + 5]
 
                 if department[0:2] == department_number['法律']:
-                    show_label = '搜尋' + year + '學年度法律系' + department_name[department] + '組的所有學生'
-                    show_text = '正在搜尋法律系' + department_name[department] + '組(' + year + ')，請稍後...'
+                    show_text = '搜尋' + year + '學年度法律系' + department_name[department] + '組的所有學生'
                 else:
-                    show_label = '搜尋' + year + '學年度' + department_name[department] + '系的所有學生'
-                    show_text = '正在搜尋' + department_name[department] + '系(' + year + ')，請稍後...'
+                    show_text = '搜尋' + year + '學年度' + department_name[department] + '系的所有學生'
 
                 line_bot_api.reply_message(
                     event.reply_token,
@@ -117,8 +115,8 @@ def handle_message(event):
                             items=[
                                 QuickReplyButton(
                                     action=PostbackAction(
-                                        label=show_label,
-                                        display_text=show_text,
+                                        label=show_text,
+                                        display_text='正在' + show_text,
                                         data=year + ' ' + department,
                                         input_option='closeRichMenu'
                                     )
@@ -198,6 +196,8 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='泥好兇喔~~இ௰இ'))
 
     elif event.postback.data.startswith('搜尋全系'):
+        year = event.postback.data.split('搜尋全系')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -210,12 +210,12 @@ def handle_postback(event):
                         PostbackAction(
                             label='文法商',
                             display_text='文法商',
-                            data='文法商' + event.postback.data.split('搜尋全系')[1]
+                            data='文法商' + year
                         ),
                         PostbackAction(
                             label='公社電資',
                             display_text='公社電資',
-                            data='公社電資' + event.postback.data.split('搜尋全系')[1]
+                            data='公社電資' + year
                         )
                     ]
                 )
@@ -223,6 +223,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('文法商'):
+        year = event.postback.data.split('文法商')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -234,17 +236,17 @@ def handle_postback(event):
                         PostbackAction(
                             label='人文學院',
                             display_text='人文學院',
-                            data='人文學院' + event.postback.data.split('文法商')[1]
+                            data='人文學院' + year
                         ),
                         PostbackAction(
                             label='法律學院',
                             display_text='法律學院',
-                            data='法律學院' + event.postback.data.split('文法商')[1]
+                            data='法律學院' + year
                         ),
                         PostbackAction(
                             label='商學院',
                             display_text='商學院',
-                            data='商學院' + event.postback.data.split('文法商')[1]
+                            data='商學院' + year
                         )
                     ]
                 )
@@ -252,6 +254,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('公社電資'):
+        year = event.postback.data.split('公社電資')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -263,17 +267,17 @@ def handle_postback(event):
                         PostbackAction(
                             label='公共事務學院',
                             display_text='公共事務學院',
-                            data='公共事務學院' + event.postback.data.split('公社電資')[1]
+                            data='公共事務學院' + year
                         ),
                         PostbackAction(
                             label='社會科學學院',
                             display_text='社會科學學院',
-                            data='社會科學學院' + event.postback.data.split('公社電資')[1]
+                            data='社會科學學院' + year
                         ),
                         PostbackAction(
                             label='電機資訊學院',
                             display_text='電機資訊學院',
-                            data='電機資訊學院' + event.postback.data.split('公社電資')[1]
+                            data='電機資訊學院' + year
                         )
                     ]
                 )
@@ -281,6 +285,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('人文學院'):
+        year = event.postback.data.split('人文學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -292,20 +298,20 @@ def handle_postback(event):
                     actions=[
                         PostbackAction(
                             label='中國文學系',
-                            display_text='正在搜尋中文系(' + event.postback.data.split('人文學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('人文學院')[1] + ' ' + department_number['中文'],
+                            display_text='正在搜尋中文系(' + year + ')',
+                            data=year + ' ' + department_number['中文'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='應用外語學系',
-                            display_text='正在搜尋應外系(' + event.postback.data.split('人文學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('人文學院')[1] + ' ' + department_number['應外'],
+                            display_text='正在搜尋應外系(' + year + ')',
+                            data=year + ' ' + department_number['應外'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='歷史學系',
-                            display_text='正在搜尋歷史系(' + event.postback.data.split('人文學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('人文學院')[1] + ' ' + department_number['歷史'],
+                            display_text='正在搜尋歷史系(' + year + ')',
+                            data=year + ' ' + department_number['歷史'],
                             input_option='closeRichMenu'
                         )
                     ]
@@ -314,6 +320,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('法律學院'):
+        year = event.postback.data.split('法律學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -325,20 +333,20 @@ def handle_postback(event):
                     actions=[
                         PostbackAction(
                             label='法學組',
-                            display_text='正在搜尋法律系法學組(' + event.postback.data.split('法律學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('法律學院')[1] + ' ' + department_number['法學'],
+                            display_text='正在搜尋法律系法學組(' + year + ')',
+                            data=year + ' ' + department_number['法學'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='司法組',
-                            display_text='正在搜尋法律系司法組(' + event.postback.data.split('法律學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('法律學院')[1] + ' ' + department_number['司法'],
+                            display_text='正在搜尋法律系司法組(' + year + ')',
+                            data=year + ' ' + department_number['司法'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='財經法組',
-                            display_text='正在搜尋法律系財法組(' + event.postback.data.split('法律學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('法律學院')[1] + ' ' + department_number['財法'],
+                            display_text='正在搜尋法律系財法組(' + year + ')',
+                            data=year + ' ' + department_number['財法'],
                             input_option='closeRichMenu'
                         )
                     ]
@@ -347,6 +355,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('商學院'):
+        year = event.postback.data.split('商學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -357,33 +367,33 @@ def handle_postback(event):
                     text='請選擇科系 (休運系請直接點圖片)',
                     default_action=PostbackAction(
                         label='休閒運動管理學系',
-                        display_text='正在搜尋休運系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
-                        data=event.postback.data.split('商學院')[1] + ' ' + department_number['休運'],
+                        display_text='正在搜尋休運系(' + year + ')',
+                        data=year + ' ' + department_number['休運'],
                         input_option='closeRichMenu'
                     ),
                     actions=[
                         PostbackAction(
                             label='企業管理學系',
-                            display_text='正在搜尋企管系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('商學院')[1] + ' ' + department_number['企管'],
+                            display_text='正在搜尋企管系(' + year + ')',
+                            data=year + ' ' + department_number['企管'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='金融與合作經濟學系',
-                            display_text='正在搜尋金融系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('商學院')[1] + ' ' + department_number['金融'],
+                            display_text='正在搜尋金融系(' + year + ')',
+                            data=year + ' ' + department_number['金融'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='會計學系',
-                            display_text='正在搜尋會計系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('商學院')[1] + ' ' + department_number['會計'],
+                            display_text='正在搜尋會計系(' + year + ')',
+                            data=year + ' ' + department_number['會計'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='統計學系',
-                            display_text='正在搜尋統計系(' + event.postback.data.split('商學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('商學院')[1] + ' ' + department_number['統計'],
+                            display_text='正在搜尋統計系(' + year + ')',
+                            data=year + ' ' + department_number['統計'],
                             input_option='closeRichMenu'
                         )
                     ]
@@ -392,6 +402,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('公共事務學院'):
+        year = event.postback.data.split('公共事務學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -403,20 +415,20 @@ def handle_postback(event):
                     actions=[
                         PostbackAction(
                             label='公共行政暨政策學系',
-                            display_text='正在搜尋公行系(' + event.postback.data.split('公共事務學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['公行'],
+                            display_text='正在搜尋公行系(' + year + ')',
+                            data=year + ' ' + department_number['公行'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='不動產與城鄉環境學系',
-                            display_text='正在搜尋不動系(' + event.postback.data.split('公共事務學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['不動'],
+                            display_text='正在搜尋不動系(' + year + ')',
+                            data=year + ' ' + department_number['不動'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='財政學系',
-                            display_text='正在搜尋財政系(' + event.postback.data.split('公共事務學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('公共事務學院')[1] + ' ' + department_number['財政'],
+                            display_text='正在搜尋財政系(' + year + ')',
+                            data=year + ' ' + department_number['財政'],
                             input_option='closeRichMenu'
                         )
                     ]
@@ -425,6 +437,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('社會科學學院'):
+        year = event.postback.data.split('社會科學學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -436,20 +450,20 @@ def handle_postback(event):
                     actions=[
                         PostbackAction(
                             label='經濟學系',
-                            display_text='正在搜尋經濟系(' + event.postback.data.split('社會科學學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['經濟'],
+                            display_text='正在搜尋經濟系(' + year + ')',
+                            data=year + ' ' + department_number['經濟'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='社會學系',
-                            display_text='正在搜尋社學系(' + event.postback.data.split('社會科學學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['社學'],
+                            display_text='正在搜尋社學系(' + year + ')',
+                            data=year + ' ' + department_number['社學'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='社會工作學系',
-                            display_text='正在搜尋社工系(' + event.postback.data.split('社會科學學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('社會科學學院')[1] + ' ' + department_number['社工'],
+                            display_text='正在搜尋社工系(' + year + ')',
+                            data=year + ' ' + department_number['社工'],
                             input_option='closeRichMenu'
                         )
                     ]
@@ -458,6 +472,8 @@ def handle_postback(event):
         )
 
     elif event.postback.data.startswith('電機資訊學院'):
+        year = event.postback.data.split('電機資訊學院')[1]
+
         line_bot_api.reply_message(
             event.reply_token,
             TemplateSendMessage(
@@ -469,20 +485,20 @@ def handle_postback(event):
                     actions=[
                         PostbackAction(
                             label='電機工程學系',
-                            display_text='正在搜尋電機系(' + event.postback.data.split('電機資訊學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['電機'],
+                            display_text='正在搜尋電機系(' + year + ')',
+                            data=year + ' ' + department_number['電機'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='資訊工程學系',
-                            display_text='正在搜尋資工系(' + event.postback.data.split('電機資訊學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['資工'],
+                            display_text='正在搜尋資工系(' + year + ')',
+                            data=year + ' ' + department_number['資工'],
                             input_option='closeRichMenu'
                         ),
                         PostbackAction(
                             label='通訊工程學系',
-                            display_text='正在搜尋通訊系(' + event.postback.data.split('電機資訊學院')[1] + ')，請稍後...',
-                            data=event.postback.data.split('電機資訊學院')[1] + ' ' + department_number['通訊'],
+                            display_text='正在搜尋通訊系(' + year + ')',
+                            data=year + ' ' + department_number['通訊'],
                             input_option='closeRichMenu'
                         )
                     ]
