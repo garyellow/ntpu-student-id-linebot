@@ -97,7 +97,7 @@ def handle_message(event):
             else:
                 over_hun = len(text) == 9
 
-                year = text[over_hun + 1:over_hun + 3]
+                year = text[1:over_hun + 3]
                 department = text[over_hun + 3:over_hun + 5]
                 if department in [department_number['法律'], department_number['社學'][0:2]]:
                     department += text[over_hun + 5]
