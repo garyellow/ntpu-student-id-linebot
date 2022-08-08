@@ -63,22 +63,28 @@ sticker = {
         'https://spy-family.net/assets/img/special/05.png',
         'https://spy-family.net/assets/img/special/anya/01.png',
         'https://spy-family.net/assets/img/special/anya/02.png',
+        'https://spy-family.net/assets/img/special/anya/03.png',
+        'https://spy-family.net/assets/img/special/anya/05.png',
+        'https://spy-family.net/assets/img/special/anya/07.png',
         'https://spy-family.net/assets/img/special/anya/08.png',
+        'https://spy-family.net/assets/img/special/anya/10.png',
         'https://spy-family.net/assets/img/special/anya/11.png',
         'https://spy-family.net/assets/img/special/anya/14.png',
         'https://spy-family.net/assets/img/special/anya/15.png',
+        'https://spy-family.net/assets/img/special/anya/17.png',
         'https://spy-family.net/assets/img/special/anya/18.png',
         'https://spy-family.net/assets/img/special/anya/20.png',
         'https://spy-family.net/assets/img/special/anya/21.png',
         'https://spy-family.net/assets/img/special/anya/22.png',
         'https://spy-family.net/assets/img/special/anya/23.png',
         'https://spy-family.net/assets/img/special/anya/24.png',
+        'https://spy-family.net/assets/img/special/anya/28.png',
         'https://spy-family.net/assets/img/special/anya/30.png',
         'https://spy-family.net/assets/img/special/anya/31.png',
         'https://spy-family.net/assets/img/special/anya/32.png',
+        'https://spy-family.net/assets/img/special/anya/35.png',
         'https://spy-family.net/assets/img/special/anya/36.png',
         'https://spy-family.net/assets/img/special/anya/37.png',
-        'https://spy-family.net/assets/img/special/anya/38.png',
         'https://spy-family.net/assets/img/special/episode5/02.png',
         'https://spy-family.net/assets/img/special/episode10/02.png',
         'https://spy-family.net/assets/img/special/episode10/03.png',
@@ -91,8 +97,10 @@ sticker = {
         'https://spy-family.net/assets/img/special/anya/09.png',
         'https://spy-family.net/assets/img/special/anya/16.png',
         'https://spy-family.net/assets/img/special/anya/19.png',
+        'https://spy-family.net/assets/img/special/anya/25.png',
         'https://spy-family.net/assets/img/special/anya/26.png',
         'https://spy-family.net/assets/img/special/anya/27.png',
+        'https://spy-family.net/assets/img/special/anya/29.png',
         'https://spy-family.net/assets/img/special/anya/33.png',
         'https://spy-family.net/assets/img/special/anya/38.png',
         'https://spy-family.net/assets/img/special/anya/39.png',
@@ -108,10 +116,14 @@ sticker = {
         'https://spy-family.net/assets/img/special/04.png',
         'https://spy-family.net/assets/img/special/loid/03.png',
         'https://spy-family.net/assets/img/special/loid/07.png',
+        'https://spy-family.net/assets/img/special/loid/08.png',
         'https://spy-family.net/assets/img/special/loid/10.png',
         'https://spy-family.net/assets/img/special/loid/11.png',
+        'https://spy-family.net/assets/img/special/loid/15.png',
+        'https://spy-family.net/assets/img/special/loid/17.png',
         'https://spy-family.net/assets/img/special/loid/18.png',
         'https://spy-family.net/assets/img/special/loid/20.png',
+        'https://spy-family.net/assets/img/special/episode3/01.png',
         'https://spy-family.net/assets/img/special/episode8/05.png',
         'https://spy-family.net/assets/img/special/episode9/03.png'
     ],
@@ -128,7 +140,6 @@ sticker = {
         'https://spy-family.net/assets/img/special/episode1/01.png',
         'https://spy-family.net/assets/img/special/episode1/05.png',
         'https://spy-family.net/assets/img/special/episode2/06.png',
-        'https://spy-family.net/assets/img/special/episode3/01.png',
         'https://spy-family.net/assets/img/special/episode3/03.png',
         'https://spy-family.net/assets/img/special/episode3/05.png',
         'https://spy-family.net/assets/img/special/episode6/02.png',
@@ -176,10 +187,7 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(
                     text=full_department_name[text],
-                    sender=Sender(
-                        name='安妮亞',
-                        icon_url=random.choice(sticker['安妮亞'])
-                    )
+                    sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
                 )
             )
 
@@ -196,10 +204,7 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(
                         text='學號' + text + '不存在OAO',
-                        sender=Sender(
-                            name='安妮亞',
-                            icon_url=random.choice(sticker['安妮亞哭'])
-                        )
+                        sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))
                     )
                 )
             else:
@@ -231,10 +236,7 @@ def handle_message(event):
                                 )
                             ]
                         ),
-                        sender=Sender(
-                            name='洛伊德',
-                            icon_url=random.choice(sticker['洛伊德'])
-                        )
+                        sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
                     )
                 )
 
@@ -690,6 +692,18 @@ def handle_follow_join(event):
 
 資料來源：國立臺北大學數位學苑2.0''',
             sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
+        )
+    )
+
+
+@handler.default()
+def default(event):
+    img = random.choice(random.choice(sticker))
+    line_bot_api.reply_message(
+        event.reply_token, ImageSendMessage(
+            original_content_url=img,
+            preview_image_url=img,
+            sender=Sender(icon_url=random.choice(random.choice(sticker)))
         )
     )
 
