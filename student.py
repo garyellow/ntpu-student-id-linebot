@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import random
 import string
 import time
 
@@ -54,6 +55,94 @@ full_department_number = {
 
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
+sticker = {
+    '安妮亞': [
+        'https://spy-family.net/assets/img/special/08.png',
+        'https://spy-family.net/assets/img/special/11.png',
+        'https://spy-family.net/assets/img/special/02.png',
+        'https://spy-family.net/assets/img/special/05.png',
+        'https://spy-family.net/assets/img/special/anya/01.png',
+        'https://spy-family.net/assets/img/special/anya/02.png',
+        'https://spy-family.net/assets/img/special/anya/08.png',
+        'https://spy-family.net/assets/img/special/anya/11.png',
+        'https://spy-family.net/assets/img/special/anya/14.png',
+        'https://spy-family.net/assets/img/special/anya/15.png',
+        'https://spy-family.net/assets/img/special/anya/18.png',
+        'https://spy-family.net/assets/img/special/anya/20.png',
+        'https://spy-family.net/assets/img/special/anya/21.png',
+        'https://spy-family.net/assets/img/special/anya/22.png',
+        'https://spy-family.net/assets/img/special/anya/23.png',
+        'https://spy-family.net/assets/img/special/anya/24.png',
+        'https://spy-family.net/assets/img/special/anya/30.png',
+        'https://spy-family.net/assets/img/special/anya/31.png',
+        'https://spy-family.net/assets/img/special/anya/32.png',
+        'https://spy-family.net/assets/img/special/anya/36.png',
+        'https://spy-family.net/assets/img/special/anya/37.png',
+        'https://spy-family.net/assets/img/special/anya/38.png',
+        'https://spy-family.net/assets/img/special/episode5/02.png',
+        'https://spy-family.net/assets/img/special/episode10/02.png',
+        'https://spy-family.net/assets/img/special/episode10/03.png',
+        'https://spy-family.net/assets/img/special/episode11/02.png',
+        'https://spy-family.net/assets/img/special/episode12/03.png'
+    ],
+    '安妮亞哭': [
+        'https://spy-family.net/assets/img/special/anya/04.png',
+        'https://spy-family.net/assets/img/special/anya/06.png',
+        'https://spy-family.net/assets/img/special/anya/09.png',
+        'https://spy-family.net/assets/img/special/anya/16.png',
+        'https://spy-family.net/assets/img/special/anya/19.png',
+        'https://spy-family.net/assets/img/special/anya/26.png',
+        'https://spy-family.net/assets/img/special/anya/27.png',
+        'https://spy-family.net/assets/img/special/anya/33.png',
+        'https://spy-family.net/assets/img/special/anya/38.png',
+        'https://spy-family.net/assets/img/special/anya/39.png',
+        'https://spy-family.net/assets/img/special/episode7/01.png',
+        'https://spy-family.net/assets/img/special/episode9/04.png',
+        'https://spy-family.net/assets/img/special/episode11/01.png',
+        'https://spy-family.net/assets/img/special/episode11/06.png'
+    ],
+    '洛伊德': [
+        'https://spy-family.net/assets/img/special/07.png',
+        'https://spy-family.net/assets/img/special/10.png',
+        'https://spy-family.net/assets/img/special/01.png',
+        'https://spy-family.net/assets/img/special/04.png',
+        'https://spy-family.net/assets/img/special/loid/03.png',
+        'https://spy-family.net/assets/img/special/loid/07.png',
+        'https://spy-family.net/assets/img/special/loid/10.png',
+        'https://spy-family.net/assets/img/special/loid/11.png',
+        'https://spy-family.net/assets/img/special/loid/18.png',
+        'https://spy-family.net/assets/img/special/loid/20.png',
+        'https://spy-family.net/assets/img/special/episode8/05.png',
+        'https://spy-family.net/assets/img/special/episode9/03.png'
+    ],
+    '其他': [
+        'https://spy-family.net/assets/img/special/09.png',
+        'https://spy-family.net/assets/img/special/12.png',
+        'https://spy-family.net/assets/img/special/03.png',
+        'https://spy-family.net/assets/img/special/06.png',
+        'https://spy-family.net/assets/img/special/yor/01.png',
+        'https://spy-family.net/assets/img/special/yor/03.png',
+        'https://spy-family.net/assets/img/special/yor/11.png',
+        'https://spy-family.net/assets/img/special/yor/15.png',
+        'https://spy-family.net/assets/img/special/yor/17.png',
+        'https://spy-family.net/assets/img/special/episode1/01.png',
+        'https://spy-family.net/assets/img/special/episode1/05.png',
+        'https://spy-family.net/assets/img/special/episode2/06.png',
+        'https://spy-family.net/assets/img/special/episode3/01.png',
+        'https://spy-family.net/assets/img/special/episode3/03.png',
+        'https://spy-family.net/assets/img/special/episode3/05.png',
+        'https://spy-family.net/assets/img/special/episode6/02.png',
+        'https://spy-family.net/assets/img/special/episode6/03.png',
+        'https://spy-family.net/assets/img/special/episode6/05.png',
+        'https://spy-family.net/assets/img/special/episode7/02.png',
+        'https://spy-family.net/assets/img/special/episode7/04.png',
+        'https://spy-family.net/assets/img/special/episode8/01.png',
+        'https://spy-family.net/assets/img/special/episode9/01.png',
+        'https://spy-family.net/assets/img/special/episode10/03.png',
+        'https://spy-family.net/assets/img/special/episode12/06.png',
+        'https://spy-family.net/assets/img/special/summermission01/01.png'
+    ]
+}
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
@@ -83,7 +172,16 @@ def handle_message(event):
 
     if text.isdecimal():
         if text in full_department_name.keys():
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=full_department_name[text]))
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text=full_department_name[text],
+                    sender=Sender(
+                        name='安妮亞',
+                        icon_url=random.choice(sticker['安妮亞'])
+                    )
+                )
+            )
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'https://lms.ntpu.edu.tw/' + text
@@ -94,7 +192,16 @@ def handle_message(event):
             name = html.find('div', {'class': 'infoPath'})
 
             if name is None:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + text + '不存在'))
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text='學號' + text + '不存在OAO',
+                        sender=Sender(
+                            name='安妮亞',
+                            icon_url=random.choice(sticker['安妮亞哭'])
+                        )
+                    )
+                )
             else:
                 over_hun = len(text) == 9
 
@@ -123,6 +230,10 @@ def handle_message(event):
                                     )
                                 )
                             ]
+                        ),
+                        sender=Sender(
+                            name='洛伊德',
+                            icon_url=random.choice(sticker['洛伊德'])
                         )
                     )
                 )
@@ -131,11 +242,14 @@ def handle_message(event):
             year = int(text) if int(text) < 1911 else int(text) - 1911
 
             if year > time.localtime(time.time()).tm_year - 1911:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'),
+                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
             elif year < 90:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼~~'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼~~'),
+                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
             elif year < 95:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'),
+                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
             else:
                 line_bot_api.reply_message(
                     event.reply_token,
@@ -157,20 +271,24 @@ def handle_message(event):
                                     input_option='openKeyboard'
                                 )
                             ]
-                        )
+                        ),
+                        sender=Sender(icon_url=random.choice(sticker['其他']))
                     )
                 )
 
     elif text == '所有系代碼':
         message = '\n'.join([x[0] + '系 -> ' + x[1] for x in department_number.items()])
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(
+            text=message,
+            sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))))
 
     elif text.strip('系') in department_number.keys():
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
                 text=department_number[text.strip('系')],
-                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))])
+                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))]),
+                sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
             )
         )
 
@@ -179,7 +297,8 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(
                 text=full_department_number[text],
-                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))])
+                quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))]),
+                sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
             )
         )
 
@@ -189,12 +308,14 @@ def handle_postback(event):
     if event.postback.data == '使用說明':
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(
-                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單'
+                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單',
+                sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
             )
         )
 
     elif event.postback.data == '兇':
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='泥好兇喔~~இ௰இ'))
+        line_bot_api.reply_message(event.reply_token,
+                                   TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))))
 
     elif event.postback.data.startswith('搜尋全系'):
         year = event.postback.data.split('搜尋全系')[1]
@@ -219,7 +340,8 @@ def handle_postback(event):
                             data='公社電資' + year
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -250,7 +372,8 @@ def handle_postback(event):
                             data='商學院' + year
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -281,7 +404,8 @@ def handle_postback(event):
                             data='電機資訊學院' + year
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -316,7 +440,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -351,7 +476,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -398,7 +524,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -433,7 +560,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -468,7 +596,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -503,7 +632,8 @@ def handle_postback(event):
                             input_option='closeRichMenu'
                         )
                     ]
-                )
+                ),
+                sender=Sender(icon_url=random.choice(sticker['其他']))
             )
         )
 
@@ -540,7 +670,8 @@ def handle_postback(event):
             message += '\n' + event.postback.data.split(' ')[0] + '學年度' + department_name[event.postback.data.split(' ')[1]] \
                        + '系共有' + str(people_cnt) + '位學生'
 
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
+        line_bot_api.reply_message(event.reply_token,
+                                   TextSendMessage(text=message, sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))))
 
 
 @handler.add(FollowEvent)
@@ -557,7 +688,8 @@ def handle_follow_join(event):
 若無法解決或找到Bug
 可以再到GitHub提出
 
-資料來源：國立臺北大學數位學苑2.0'''
+資料來源：國立臺北大學數位學苑2.0''',
+            sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
         )
     )
 
