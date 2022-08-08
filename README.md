@@ -1,7 +1,8 @@
 # ntpu-student-id-linebot
 
 a line bot about student id  
-[Line Bot Link](https://lin.ee/QiMmPBv)
+
+<a href="https://lin.ee/QiMmPBv"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="32" border="0"></a>
 
 ## 使用方式
 
@@ -10,8 +11,5 @@ a line bot about student id
 3. 輸入**系代碼**獲取**系名**
 4. 輸入**入學學年**並依序**選取科系**獲取**某學年度某系的學生名單**
 
-### exception
-
-1. 由於是使用爬蟲，且delay不長，若短時間內大量使用程式可能會被目標網頁阻擋
-2. 有時候因為程式被休眠所以要先叫醒，可能會需要等十幾秒左右
-   > 通常是晚上10點後到隔天早上8點會被休眠
+## 其他
+有 bug 或想多什麼功能都可以聯繫我
