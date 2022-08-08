@@ -95,7 +95,38 @@ def handle_message(event):
             if name is None:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學號' + text + '不存在'))
             else:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=name.find('a').text))
+                over_hun = len(text) == 9
+
+                year = text[over_hun + 1:over_hun + 3]
+                department = text[over_hun + 3:over_hun + 5]
+                if department in [department_number['法律'], department_number['社學'][0:2]]:
+                    department += text[over_hun + 5]
+
+                if department == department_number['法律']:
+                    show_label = '查詢' + year + '學年度法律系' + department_name[department] + '組的所有學生'
+                    show_text = '正在爬取法律系' + department_name[department] + '組(' + year + ')，請稍後...'
+                else:
+                    show_label = '查詢' + year + '學年度' + department_name[department] + '系的所有學生'
+                    show_text = '正在爬取' + department_name[department] + '系(' + year + ')，請稍後...'
+
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text=name.find('a').text,
+                        quick_reply=QuickReply(
+                            items=[
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label=show_label,
+                                        display_text=show_text,
+                                        data=year + ' ' + department,
+                                        input_option='closeRichMenu'
+                                    )
+                                )
+                            ]
+                        )
+                    )
+                )
 
         elif 2 <= len(text) <= 4:
             year = int(text) if int(text) < 1911 else int(text) - 1911
