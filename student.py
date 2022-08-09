@@ -185,7 +185,7 @@ def handle_message(event):
             event.reply_token, ImageSendMessage(
                 original_content_url=img,
                 preview_image_url=img,
-                sender=Sender(icon_url=random.choice(random.choice(sticker)))
+                sender=Sender(icon_url=random.choice(random.choice(list(sticker.values()))))
             )
         )
         return
