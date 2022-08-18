@@ -674,11 +674,11 @@ def handle_postback(event):
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
-            pages = len(html.find_all('span', {'class': 'item'})) - 1
+            pages = len(html.find_all('span', {'class': 'item'}))
 
             message = ''
             people_cnt = 0
-            for i in range(1, pages + 1):
+            for i in range(1, pages):
                 time.sleep(0.05)
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + ''.join(
@@ -690,7 +690,7 @@ def handle_postback(event):
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
-                    message += name.ljust(6, '．') + number + '\n'
+                    message += name.ljust(10, '.') + number + '\n' if name[0] in string.ascii_letters else name.ljust(6, '．') + number + '\n'
                     people_cnt += 1
 
         if event.postback.data.split(' ')[1][0:2] == department_number['法律']:
