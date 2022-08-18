@@ -182,11 +182,6 @@ def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
 
-@app.route('/check')
-def healthy():
-    return 'OK'
-
-
 @app.route('/callback', methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
