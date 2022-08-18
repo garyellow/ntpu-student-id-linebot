@@ -220,12 +220,12 @@ def handle_message(event):
             )
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
-            url = 'https://lms.ntpu.edu.tw/' + text
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
             web = requests.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
-            name = html.find('div', {'class': 'infoPath'})
+            name = html.find('div', {'class': 'bloglistTitle'})
 
             if name is None:
                 line_bot_api.reply_message(
