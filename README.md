@@ -3,8 +3,8 @@
 a line bot about student id  
 
 <a href="https://lin.ee/QiMmPBv"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="32" border="0"></a>
-<br>
-![qrcode](https://qr-official.line.me/sid/M/148wrcch.png)
+<br><br>
+![qrcode](https://github.com/garyellow/ntpu-student-id-linebot/blob/master/M_gainfriends_qr.png)
 
 ## 使用方式
 
