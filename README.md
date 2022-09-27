@@ -6,7 +6,7 @@ ID：[@148wrcch](https://lin.ee/QiMmPBv)
 <br><br>
 <a href="https://lin.ee/QiMmPBv"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="32" border="0"></a>
 <br><br>
-![qrcode](https://github.com/garyellow/ntpu-student-id-linebot/blob/master/M_gainfriends_qr.png)
+![qrcode](https://github.com/garyellow/ntpu-student-id-linebot/blob/master/qr_code/M_gainfriends_qr.png)
 
 ## 使用方式
 
