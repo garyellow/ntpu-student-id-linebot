@@ -280,12 +280,12 @@ def handle_message(event):
             if year > time.localtime(time.time()).tm_year - 1911:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='你未來人??', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                    TextSendMessage(text='你未來人？(⊙ˍ⊙)', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
                 )
             elif year < 90:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='學校都還沒蓋好，急什麼~~', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                    TextSendMessage(text='學校都還沒蓋好(￣▽￣)', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
                 )
             elif year < 95:
                 line_bot_api.reply_message(
