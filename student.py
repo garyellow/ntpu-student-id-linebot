@@ -55,6 +55,7 @@ full_department_number = {
 
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
+
 sticker = {
     '安妮亞': [
         'https://spy-family.net/assets/img/special/08.png',
@@ -277,14 +278,20 @@ def handle_message(event):
             year = int(text) if int(text) < 1911 else int(text) - 1911
 
             if year > time.localtime(time.time()).tm_year - 1911:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你未來人??'),
-                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='你未來人??', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                )
             elif year < 90:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='學校都還沒蓋好，急什麼~~'),
-                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='學校都還沒蓋好，急什麼~~', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                )
             elif year < 95:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='資料未建檔'),
-                                           Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='資料未建檔', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞'])))
+                )
             else:
                 line_bot_api.reply_message(
                     event.reply_token,
@@ -349,8 +356,10 @@ def handle_postback(event):
         )
 
     elif event.postback.data == '兇':
-        line_bot_api.reply_message(event.reply_token,
-                                   TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))))
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭'])))
+        )
 
     elif event.postback.data.startswith('搜尋全系'):
         year = event.postback.data.split('搜尋全系')[1]
