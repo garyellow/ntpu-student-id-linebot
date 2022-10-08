@@ -356,9 +356,18 @@ def handle_postback(event):
         )
 
     elif event.postback.data == '兇':
+        img = random.choice(random.choice(list(sticker.values())))
+        photo = random.choice(sticker['安妮亞哭'])
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭'])))
+            [
+                TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=photo)),
+                ImageSendMessage(
+                    original_content_url=img,
+                    preview_image_url=img,
+                    sender=Sender(name='安妮亞', icon_url=photo)
+                )
+            ]
         )
 
     elif event.postback.data.startswith('搜尋全系'):
