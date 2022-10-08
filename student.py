@@ -203,6 +203,9 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
+    if event.message.type in ['image', 'video', 'audio', 'file']:
+        return
+
     if event.message.type != 'text':
         img = random.choice(random.choice(list(sticker.values())))
         line_bot_api.reply_message(
@@ -356,7 +359,7 @@ def handle_postback(event):
         )
 
     elif event.postback.data == '兇':
-        img = random.choice(random.choice(list(sticker.values())))
+        img = random.choice(sticker['安妮亞哭'])
         photo = random.choice(sticker['安妮亞哭'])
         line_bot_api.reply_message(
             event.reply_token,
