@@ -351,26 +351,20 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     if event.postback.data == '使用說明':
+        mes_sender = Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(
-                text='輸入學號獲取學生姓名\n輸入系名獲取系代碼\n輸入系代碼獲取系名\n輸入入學學年獲取某系的學生名單',
-                sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
-            )
+            event.reply_token, [
+                TextSendMessage(text='輸入學號可獲取學生姓名\n輸入系名可獲取系代碼\n輸入系代碼可獲取系名\n輸入入學學年獲取某系的學生名單',
+                                sender=mes_sender),
+                TextSendMessage(text='輸入範例\n學號：412345678\n系名：資工系、資訊工程學系\n系代碼：85\n' +
+                                     '入學學年：' + str(time.localtime(time.time()).tm_year - 1911) + '、' + str(time.localtime(time.time()).tm_year),
+                                sender=mes_sender),
+            ]
         )
 
     elif event.postback.data == '兇':
-        img = random.choice(sticker['安妮亞哭'])
-        photo = random.choice(sticker['安妮亞哭'])
         line_bot_api.reply_message(
-            event.reply_token,
-            [
-                TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=photo)),
-                ImageSendMessage(
-                    original_content_url=img,
-                    preview_image_url=img,
-                    sender=Sender(name='安妮亞', icon_url=photo)
-                )
-            ]
+            event.reply_token, TextSendMessage(text='泥好兇喔~~இ௰இ', sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭'])))
         )
 
     elif event.postback.data.startswith('搜尋全系'):
