@@ -693,8 +693,12 @@ def handle_postback(event):
     else:
         yd = ''.join(event.postback.data.split(' '))
         with requests.Session() as s:
+            s.adapters.DEFAULT_RETRIES = 5
+            s.keep_alive = False
+            s.headers.update({'User-Agent': ua.random})
+
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
-            web = s.get(url, headers={'User-Agent': ua.random})
+            web = s.get(url)
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -711,9 +715,10 @@ def handle_postback(event):
 
             for i in range(2, pages):
                 time.sleep(random.uniform(0.05, 0.15))
+                s.headers.update({'User-Agent': ua.random})
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
-                web = s.get(url, headers={'User-Agent': ua.random})
+                web = s.get(url)
                 web.encoding = 'utf-8'
 
                 html = Bs4(web.text, 'html.parser')
