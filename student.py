@@ -688,8 +688,9 @@ def handle_postback(event):
         )
 
     else:
+        yd = ''.join(event.postback.data.split(' '))
         with requests.Session() as s:
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + ''.join(event.postback.data.split(' '))
+            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
             web = s.get(url)
             web.encoding = 'utf-8'
 
@@ -708,8 +709,7 @@ def handle_postback(event):
             for i in range(2, pages):
                 time.sleep(random.uniform(0.2, 0.5))
 
-                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + ''.join(
-                    event.postback.data.split(' '))
+                url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
                 web = s.get(url)
                 web.encoding = 'utf-8'
 
