@@ -699,7 +699,7 @@ def handle_postback(event):
             message = ''
             people_cnt = 0
             for i in range(1, pages):
-                time.sleep(random.uniform(0.05, 0.1))
+                time.sleep(random.uniform(0.1, 0.2))
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + ''.join(
                     event.postback.data.split(' '))
