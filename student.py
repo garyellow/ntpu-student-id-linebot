@@ -698,8 +698,15 @@ def handle_postback(event):
 
             message = ''
             people_cnt = 0
-            for i in range(1, pages):
-                time.sleep(5)
+
+            for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                name = item.find('a').text
+                number = item.find('a').get('href').split('/')[-1]
+                message += name.ljust(10, '.') + number + '\n' if name[0] in string.ascii_letters else name.ljust(6, '．') + number + '\n'
+                people_cnt += 1
+
+            for i in range(2, pages):
+                time.sleep(random.uniform(0.2, 0.5))
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + ''.join(
                     event.postback.data.split(' '))
