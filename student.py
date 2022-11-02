@@ -707,7 +707,7 @@ def handle_postback(event):
                 people_cnt += 1
 
             for i in range(2, pages):
-                time.sleep(random.uniform(0.2, 0.5))
+                time.sleep(random.uniform(0.05, 0.15))
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
                 web = s.get(url)
