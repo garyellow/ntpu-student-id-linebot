@@ -4,6 +4,7 @@ import random
 import string
 import time
 
+import fake_useragent
 import requests
 from bs4 import BeautifulSoup as Bs4
 from flask import Flask, request, abort, redirect
@@ -177,6 +178,8 @@ sticker = {
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
 
+ua = fake_useragent.UserAgent()
+
 
 @app.route('/')
 def github():
@@ -230,7 +233,7 @@ def handle_message(event):
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
-            web = requests.get(url)
+            web = requests.get(url, headers={'User-Agent': ua.random})
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -691,7 +694,7 @@ def handle_postback(event):
         yd = ''.join(event.postback.data.split(' '))
         with requests.Session() as s:
             url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
-            web = s.get(url)
+            web = s.get(url, headers={'User-Agent': ua.random})
             web.encoding = 'utf-8'
 
             html = Bs4(web.text, 'html.parser')
@@ -710,7 +713,7 @@ def handle_postback(event):
                 time.sleep(random.uniform(0.05, 0.15))
 
                 url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
-                web = s.get(url)
+                web = s.get(url, headers={'User-Agent': ua.random})
                 web.encoding = 'utf-8'
 
                 html = Bs4(web.text, 'html.parser')
