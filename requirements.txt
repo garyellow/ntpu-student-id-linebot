@@ -3,4 +3,3 @@ beautifulsoup4==4.11.1
 flask==2.2.2
 line-bot-sdk==2.3.0
 gunicorn==20.1.0
-fake-useragent==0.1.11
