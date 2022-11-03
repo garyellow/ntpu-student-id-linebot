@@ -692,7 +692,7 @@ def handle_postback(event):
         with requests.Session() as s:
             s.keep_alive = False
 
-            url = 'http://lms.ntpu.edu.tw/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
+            url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
             web = s.get(url)
             web.encoding = 'utf-8'
 
