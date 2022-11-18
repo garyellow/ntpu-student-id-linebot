@@ -187,8 +187,8 @@ def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
 
-@app.route('/set_renew')
-def set_renew():
+@app.route('/renew')
+def renew():
     global student_name
     cur_year = time.localtime(time.time()).tm_year - 1911
     new_student_name: Dict[str, str] = {}
