@@ -249,6 +249,7 @@ def callback():
 
 @handler.add(MessageEvent)
 def handle_message(event):
+    global student_name
     if event.message.type in ['image', 'video', 'audio', 'file']:
         return
 
