@@ -198,7 +198,6 @@ def set_renew():
             s.keep_alive = False
 
             for dep in all_department_number:
-                print(year, dep)
                 time.sleep(random.uniform(0.05, 0.1))
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                 web = s.get(url)
@@ -283,9 +282,9 @@ def handle_message(event):
                 web.encoding = 'utf-8'
 
                 html = Bs4(web.text, 'html.parser')
-                name += html.find('div', {'class': 'bloglistTitle'})
+                person = html.find('div', {'class': 'bloglistTitle'})
 
-                if name is None:
+                if person is None:
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(
@@ -293,6 +292,8 @@ def handle_message(event):
                             sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))
                         )
                     )
+                else:
+                    name += person.find('a').text
             else:
                 name += student_name[text]
 
