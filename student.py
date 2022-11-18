@@ -280,58 +280,69 @@ def handle_message(event):
             )
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
-            if student_name.__contains__(text):
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(
-                        text='學號' + text + '不存在OAO',
-                        sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))
+            name = ""
+            if not student_name.__contains__(text):
+                url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
+                web = requests.get(url)
+                web.encoding = 'utf-8'
+
+                html = Bs4(web.text, 'html.parser')
+                name += html.find('div', {'class': 'bloglistTitle'})
+
+                if name is None:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(
+                            text='學號' + text + '不存在OAO',
+                            sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))
+                        )
                     )
-                )
             else:
-                over_hun = len(text) == 9
+                name += student_name[text]
 
-                year = text[1:over_hun + 3]
-                department = text[over_hun + 3:over_hun + 5]
+            over_hun = len(text) == 9
 
-                if department in [department_number['法律'], department_number['社學'][0:2]]:
-                    department += text[over_hun + 5]
+            year = text[1:over_hun + 3]
+            department = text[over_hun + 3:over_hun + 5]
 
-                message = year + '學年度 '
+            if department in [department_number['法律'], department_number['社學'][0:2]]:
+                department += text[over_hun + 5]
 
-                if department[0:2] == '71':
-                    message += '法律系 ' + department_name[department] + '組 '
-                elif department[0:2] == '74':
-                    message += department_name[department] + '系 '
-                else:
-                    message += department_name[department] + '系 '
+            message = year + '學年度 '
 
-                message += student_name[text]
+            if department[0:2] == '71':
+                message += '法律系 ' + department_name[department] + '組 '
+            elif department[0:2] == '74':
+                message += department_name[department] + '系 '
+            else:
+                message += department_name[department] + '系 '
 
-                if department[0:2] == department_number['法律']:
-                    show_text = '搜尋' + year + '學年度法律系' + department_name[department] + '組'
-                else:
-                    show_text = '搜尋' + year + '學年度' + department_name[department] + '系'
+            message += name
 
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(
-                        text=message,
-                        quick_reply=QuickReply(
-                            items=[
-                                QuickReplyButton(
-                                    action=PostbackAction(
-                                        label=show_text,
-                                        display_text='正在' + show_text,
-                                        data=year + ' ' + department,
-                                        input_option='closeRichMenu'
-                                    )
+            if department[0:2] == department_number['法律']:
+                show_text = '搜尋' + year + '學年度法律系' + department_name[department] + '組'
+            else:
+                show_text = '搜尋' + year + '學年度' + department_name[department] + '系'
+
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text=message,
+                    quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(
+                                action=PostbackAction(
+                                    label=show_text,
+                                    display_text='正在' + show_text,
+                                    data=year + ' ' + department,
+                                    input_option='closeRichMenu'
                                 )
-                            ]
-                        ),
-                        sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
-                    )
+                            )
+                        ]
+                    ),
+                    sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
                 )
+            )
 
         elif 2 <= len(text) <= 4:
             year = int(text) if int(text) < 1911 else int(text) - 1911
