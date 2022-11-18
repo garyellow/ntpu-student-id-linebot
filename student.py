@@ -58,7 +58,7 @@ all_department_number = ['712', '714', '716', '72', '73', '742', '744', '75', '7
 
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
-student_name: Dict[str, str]
+student_name: Dict[str, str] = {}
 start = True
 
 sticker = {
