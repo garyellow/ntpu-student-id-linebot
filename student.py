@@ -53,8 +53,13 @@ full_department_number = {
     '電機工程學系': '87'
 }
 
+all_department_number = ['712', '714', '716', '72', '73', '742', '744', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87']
+
+renew = True
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
+student_name: dict
+new_student_name: dict
 
 sticker = {
     '安妮亞': [
@@ -183,8 +188,53 @@ def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
 
+@app.route('/set_renew')
+def set_renew():
+    global renew
+    renew = True
+    return 'OK'
+
+
 @app.route('/check')
 def healthy():
+    global renew, student_name, new_student_name
+    if renew:
+        cur_year = time.localtime(time.time()).tm_year - 1911
+
+        for year in range(cur_year - 5, cur_year):
+            with requests.Session() as s:
+                s.keep_alive = False
+
+                for dep in all_department_number:
+                    url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
+                    web = s.get(url)
+                    web.encoding = 'utf-8'
+
+                    html = Bs4(web.text, 'html.parser')
+                    pages = len(html.find_all('span', {'class': 'item'}))
+
+                    for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                        name = item.find('a').text
+                        number = item.find('a').get('href').split('/')[-1]
+                        new_student_name[number] = name
+
+                    for i in range(2, pages):
+                        time.sleep(random.uniform(0.05, 0.1))
+
+                        url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
+                        web = s.get(url)
+                        web.encoding = 'utf-8'
+
+                        html = Bs4(web.text, 'html.parser')
+                        for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                            name = item.find('a').text
+                            number = item.find('a').get('href').split('/')[-1]
+                            new_student_name[number] = name
+
+        student_name = new_student_name
+        new_student_name.clear()
+        renew = False
+
     return 'OK'
 
 
@@ -229,14 +279,7 @@ def handle_message(event):
             )
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
-            url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
-            web = requests.get(url)
-            web.encoding = 'utf-8'
-
-            html = Bs4(web.text, 'html.parser')
-            name = html.find('div', {'class': 'bloglistTitle'})
-
-            if name is None:
+            if student_name.__contains__(text):
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(
@@ -249,8 +292,20 @@ def handle_message(event):
 
                 year = text[1:over_hun + 3]
                 department = text[over_hun + 3:over_hun + 5]
+
                 if department in [department_number['法律'], department_number['社學'][0:2]]:
                     department += text[over_hun + 5]
+
+                message = year + '學年度 '
+
+                if department[0:2] == '71':
+                    message += '法律系 ' + department_name[department] + '組 '
+                elif department[0:2] == '74':
+                    message += department_name[department] + '系 '
+                else:
+                    message += department_name[department] + '系 '
+
+                message += student_name[text]
 
                 if department[0:2] == department_number['法律']:
                     show_text = '搜尋' + year + '學年度法律系' + department_name[department] + '組'
@@ -260,7 +315,7 @@ def handle_message(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(
-                        text=name.find('a').text,
+                        text=message,
                         quick_reply=QuickReply(
                             items=[
                                 QuickReplyButton(
@@ -344,6 +399,40 @@ def handle_message(event):
                 text=full_department_number[text],
                 quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))]),
                 sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
+            )
+        )
+
+    elif text in student_name.values():
+        message = ""
+        for key, value in student_name.items():
+            if value == text:
+                if message != "":
+                    message += "\n"
+
+                over_hun = len(key) == 9
+
+                year = key[1:over_hun + 3]
+                department = key[over_hun + 3:over_hun + 5]
+
+                if department in [department_number['法律'], department_number['社學'][0:2]]:
+                    department += key[over_hun + 5]
+
+                message += year + '學年度 '
+
+                if department[0:2] == '71':
+                    message += '法律系 ' + department_name[department] + '組 '
+                elif department[0:2] == '74':
+                    message += department_name[department] + '系 '
+                else:
+                    message += department_name[department] + '系 '
+
+                message += key
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=message,
+                sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
             )
         )
 
