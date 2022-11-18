@@ -194,19 +194,19 @@ def renew():
     cur_year = time.localtime(time.time()).tm_year - 1911
     new_student_name: Dict[str, str] = {}
 
-    for year in range(cur_year - 5, cur_year + 1):
-        with requests.Session() as s:
-            s.keep_alive = False
+    with requests.Session() as s:
+        s.keep_alive = False
 
+        for year in range(cur_year - 5, cur_year + 1):
             for dep in all_department_number:
                 time.sleep(random.uniform(0.01, 0.05))
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                 web = s.get(url)
                 web.encoding = 'utf-8'
 
-                html = Bs4(web.text, 'html.parser')
                 pages = len(html.find_all('span', {'class': 'item'}))
 
+                html = Bs4(web.text, 'html.parser')
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
@@ -214,7 +214,6 @@ def renew():
 
                 for i in range(2, pages):
                     time.sleep(random.uniform(0.01, 0.05))
-
                     url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
                     web.encoding = 'utf-8'
@@ -255,6 +254,7 @@ def callback():
 @handler.add(MessageEvent)
 def handle_message(event):
     global student_name
+
     if event.message.type in ['image', 'video', 'audio', 'file']:
         return
 
@@ -281,8 +281,10 @@ def handle_message(event):
             )
 
         elif text[0] == '4' and 8 <= len(text) <= 9:
-            name = ""
-            if not student_name.__contains__(text):
+            name = ''
+            if student_name.__contains__(text):
+                name += student_name[text]
+            else:
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
                 web = requests.get(url)
                 web.encoding = 'utf-8'
@@ -290,7 +292,9 @@ def handle_message(event):
                 html = Bs4(web.text, 'html.parser')
                 person = html.find('div', {'class': 'bloglistTitle'})
 
-                if person is None:
+                if person is not None:
+                    name += person.find('a').text
+                else:
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(
@@ -298,24 +302,20 @@ def handle_message(event):
                             sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞哭']))
                         )
                     )
-                else:
-                    name += person.find('a').text
-            else:
-                name += student_name[text]
+                    return
 
             over_hun = len(text) == 9
 
             year = text[1:over_hun + 3]
-            department = text[over_hun + 3:over_hun + 5]
+            message = year + '學年度 '
 
+            department = text[over_hun + 3:over_hun + 5]
             if department in [department_number['法律'], department_number['社學'][0:2]]:
                 department += text[over_hun + 5]
 
-            message = year + '學年度 '
-
-            if department[0:2] == '71':
+            if department[0:2] == department_number['法律']:
                 message += '法律系 ' + department_name[department] + '組 '
-            elif department[0:2] == '74':
+            elif department[0:2] == department_number['社學'][0:2]:
                 message += department_name[department] + '系 '
             else:
                 message += department_name[department] + '系 '
@@ -392,7 +392,7 @@ def handle_message(event):
                 )
 
     elif text == '所有系代碼':
-        message = '\n'.join([x[0] + '系 -> ' + x[1] for x in department_number.items()])
+        message = '\n'.join([x + '系 -> ' + y for x, y in department_number.items()])
         line_bot_api.reply_message(event.reply_token, TextSendMessage(
             text=message,
             sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))))
@@ -418,30 +418,46 @@ def handle_message(event):
         )
 
     elif text in student_name.values():
-        message = ""
+        message = ''
         for key, value in student_name.items():
             if value == text:
-                if message != "":
-                    message += "\n"
+                if message != '':
+                    message += '\n'
 
                 over_hun = len(key) == 9
 
                 year = key[1:over_hun + 3]
-                department = key[over_hun + 3:over_hun + 5]
+                message += year + '學年度 '
 
+                department = key[over_hun + 3:over_hun + 5]
                 if department in [department_number['法律'], department_number['社學'][0:2]]:
                     department += key[over_hun + 5]
 
-                message += year + '學年度 '
-
-                if department[0:2] == '71':
+                if department[0:2] == department_number['法律']:
                     message += '法律系 ' + department_name[department] + '組 '
-                elif department[0:2] == '74':
+                elif department[0:2] == department_number['社學'][0:2]:
                     message += department_name[department] + '系 '
                 else:
                     message += department_name[department] + '系 '
 
                 message += key
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=message,
+                sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
+            )
+        )
+
+    elif len(text) >= 2:
+        message = ''
+        for key, value in student_name.items():
+            if text in value:
+                if message != '':
+                    message += '\n'
+
+                message += key.ljust(10, '.') + value
 
         line_bot_api.reply_message(
             event.reply_token,
@@ -458,9 +474,9 @@ def handle_postback(event):
         mes_sender = Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
         line_bot_api.reply_message(
             event.reply_token, [
-                TextSendMessage(text='輸入學號可獲取學生姓名\n輸入系名可獲取系代碼\n輸入系代碼可獲取系名\n輸入入學學年獲取某系的學生名單',
+                TextSendMessage(text='輸入學號可獲取學生姓名\n輸入姓名可獲取學號\n輸入系名可獲取系代碼\n輸入系代碼可獲取系名\n輸入入學學年獲取某系的學生名單',
                                 sender=mes_sender),
-                TextSendMessage(text='輸入範例\n學號：412345678\n系名：資工系、資訊工程學系\n系代碼：85\n' +
+                TextSendMessage(text='輸入範例\n學號：412345678\n姓名：林某某\n系名：資工系、資訊工程學系\n系代碼：85\n' +
                                      '入學學年：' + str(time.localtime(time.time()).tm_year - 1911) + '、' + str(time.localtime(time.time()).tm_year),
                                 sender=mes_sender),
             ]
@@ -809,7 +825,7 @@ def handle_postback(event):
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                message += name.ljust(10, '.') + number + '\n' if name[0] in string.ascii_letters else name.ljust(6, '．') + number + '\n'
+                message += number.ljust(10, '.') + name + '\n'
                 people_cnt += 1
 
             for i in range(2, pages):
@@ -823,7 +839,7 @@ def handle_postback(event):
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
-                    message += name.ljust(10, '.') + number + '\n' if name[0] in string.ascii_letters else name.ljust(6, '．') + number + '\n'
+                    message += number.ljust(10, '.') + name + '\n'
                     people_cnt += 1
 
         if event.postback.data.split(' ')[1][0:2] == department_number['法律']:
@@ -845,9 +861,10 @@ def handle_follow_join(event):
         event.reply_token, TextSendMessage(
             text='''泥好~~我是學號姓名查詢機器人🤖
 可以用學號查詢到學生姓名
-要看使用說明可以點選下方選單
+也可以用姓名查詢到學生學號
+詳細使用說明在下方選單
 
-有問題可以先去看常見問題
+有疑問可以先去看常見問題
 若無法解決或找到Bug
 可以再到GitHub提出
 
