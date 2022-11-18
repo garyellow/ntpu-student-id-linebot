@@ -3,6 +3,7 @@ import os
 import random
 import string
 import time
+from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup as Bs4
@@ -58,8 +59,7 @@ all_department_number = ['712', '714', '716', '72', '73', '742', '744', '75', '7
 renew = True
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
-student_name: dict[str, str] = {}
-new_student_name: dict[str, str] = {}
+student_name: Dict[str, str]
 
 sticker = {
     '安妮亞': [
@@ -197,10 +197,10 @@ def set_renew():
 
 @app.route('/check')
 def healthy():
-    global renew, student_name, new_student_name
+    global renew, student_name
     if renew:
         cur_year = time.localtime(time.time()).tm_year - 1911
-        new_student_name.clear()
+        new_student_name: Dict[str, str] = {}
 
         for year in range(cur_year - 5, cur_year):
             with requests.Session() as s:
