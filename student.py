@@ -198,7 +198,7 @@ def renew():
             s.keep_alive = False
 
             for dep in all_department_number:
-                time.sleep(random.uniform(0.05, 0.1))
+                time.sleep(random.uniform(0.01, 0.05))
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                 web = s.get(url)
                 web.encoding = 'utf-8'
@@ -212,7 +212,7 @@ def renew():
                     new_student_name[number] = name
 
                 for i in range(2, pages):
-                    time.sleep(random.uniform(0.05, 0.1))
+                    time.sleep(random.uniform(0.01, 0.05))
 
                     url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
@@ -807,7 +807,7 @@ def handle_postback(event):
                 people_cnt += 1
 
             for i in range(2, pages):
-                time.sleep(random.uniform(0.05, 0.1))
+                time.sleep(random.uniform(0.01, 0.05))
 
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
                 web = s.get(url)
