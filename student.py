@@ -194,7 +194,7 @@ def renew():
     cur_year = time.localtime(time.time()).tm_year - 1911
     new_student_name: Dict[str, str] = {}
 
-    for year in range(cur_year - 5, cur_year):
+    for year in range(cur_year - 5, cur_year + 1):
         with requests.Session() as s:
             s.keep_alive = False
 
