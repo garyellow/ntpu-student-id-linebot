@@ -206,6 +206,7 @@ def healthy():
                 s.keep_alive = False
 
                 for dep in all_department_number:
+                    time.sleep(random.uniform(0.05, 0.1))
                     url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
                     web.encoding = 'utf-8'
