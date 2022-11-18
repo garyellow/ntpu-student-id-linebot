@@ -56,7 +56,6 @@ full_department_number = {
 
 all_department_number = ['712', '714', '716', '72', '73', '742', '744', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87']
 
-renew = True
 department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
 student_name: Dict[str, str]
@@ -190,53 +189,48 @@ def github():
 
 @app.route('/set_renew')
 def set_renew():
-    global renew
-    renew = True
-    return 'OK'
+    global student_name
+    cur_year = time.localtime(time.time()).tm_year - 1911
+    new_student_name: Dict[str, str] = {}
 
+    for year in range(cur_year - 5, cur_year):
+        with requests.Session() as s:
+            s.keep_alive = False
 
-@app.route('/check')
-def healthy():
-    global renew, student_name
-    if renew:
-        cur_year = time.localtime(time.time()).tm_year - 1911
-        new_student_name: Dict[str, str] = {}
+            for dep in all_department_number:
+                print(year, dep)
+                time.sleep(random.uniform(0.05, 0.1))
+                url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
+                web = s.get(url)
+                web.encoding = 'utf-8'
 
-        for year in range(cur_year - 5, cur_year):
-            with requests.Session() as s:
-                s.keep_alive = False
+                html = Bs4(web.text, 'html.parser')
+                pages = len(html.find_all('span', {'class': 'item'}))
 
-                for dep in all_department_number:
-                    print(year, dep)
+                for item in html.find_all('div', {'class': 'bloglistTitle'}):
+                    name = item.find('a').text
+                    number = item.find('a').get('href').split('/')[-1]
+                    new_student_name[number] = name
+
+                for i in range(2, pages):
                     time.sleep(random.uniform(0.05, 0.1))
-                    url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
+
+                    url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
                     web.encoding = 'utf-8'
 
                     html = Bs4(web.text, 'html.parser')
-                    pages = len(html.find_all('span', {'class': 'item'}))
-
                     for item in html.find_all('div', {'class': 'bloglistTitle'}):
                         name = item.find('a').text
                         number = item.find('a').get('href').split('/')[-1]
                         new_student_name[number] = name
 
-                    for i in range(2, pages):
-                        time.sleep(random.uniform(0.05, 0.1))
+    student_name = new_student_name.copy()
+    return 'OK'
 
-                        url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
-                        web = s.get(url)
-                        web.encoding = 'utf-8'
 
-                        html = Bs4(web.text, 'html.parser')
-                        for item in html.find_all('div', {'class': 'bloglistTitle'}):
-                            name = item.find('a').text
-                            number = item.find('a').get('href').split('/')[-1]
-                            new_student_name[number] = name
-
-        student_name = new_student_name.copy()
-        renew = False
-
+@app.route('/check')
+def healthy():
     return 'OK'
 
 
