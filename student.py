@@ -456,7 +456,7 @@ def handle_message(event):
                 if message != '':
                     message += '\n'
 
-                message += key.ljust(10, '.') + value
+                message += key.ljust(11, '-') + value
 
         line_bot_api.reply_message(
             event.reply_token,
@@ -822,7 +822,7 @@ def handle_postback(event):
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
-                message += number.ljust(10, '.') + name + '\n'
+                message += number.ljust(11, '-') + name + '\n'
                 people_cnt += 1
 
             pages = len(html.find_all('span', {'class': 'item'}))
@@ -837,7 +837,7 @@ def handle_postback(event):
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
-                    message += number.ljust(10, '.') + name + '\n'
+                    message += number.ljust(11, '-') + name + '\n'
                     people_cnt += 1
 
         if event.postback.data.split(' ')[1][0:2] == department_number['法律']:
