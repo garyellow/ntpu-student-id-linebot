@@ -204,14 +204,13 @@ def renew():
                 web = s.get(url)
                 web.encoding = 'utf-8'
 
-                pages = len(html.find_all('span', {'class': 'item'}))
-
                 html = Bs4(web.text, 'html.parser')
                 for item in html.find_all('div', {'class': 'bloglistTitle'}):
                     name = item.find('a').text
                     number = item.find('a').get('href').split('/')[-1]
                     new_student_name[number] = name
 
+                pages = len(html.find_all('span', {'class': 'item'}))
                 for i in range(2, pages):
                     time.sleep(random.uniform(0.01, 0.05))
                     url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
@@ -816,18 +815,17 @@ def handle_postback(event):
             web = s.get(url)
             web.encoding = 'utf-8'
 
-            html = Bs4(web.text, 'html.parser')
-            pages = len(html.find_all('span', {'class': 'item'}))
-
             message = ''
             people_cnt = 0
 
+            html = Bs4(web.text, 'html.parser')
             for item in html.find_all('div', {'class': 'bloglistTitle'}):
                 name = item.find('a').text
                 number = item.find('a').get('href').split('/')[-1]
                 message += number.ljust(10, '.') + name + '\n'
                 people_cnt += 1
 
+            pages = len(html.find_all('span', {'class': 'item'}))
             for i in range(2, pages):
                 time.sleep(random.uniform(0.01, 0.05))
 
