@@ -197,7 +197,7 @@ def renew():
     with requests.Session() as s:
         s.keep_alive = False
 
-        for year in range(cur_year - 5, cur_year + 1):
+        for year in range(cur_year - 4, cur_year + 1):
             for dep in all_department_number:
                 time.sleep(random.uniform(0.01, 0.05))
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
@@ -306,20 +306,10 @@ def handle_message(event):
             over_hun = len(text) == 9
 
             year = text[1:over_hun + 3]
-            message = year + ' '
 
             department = text[over_hun + 3:over_hun + 5]
             if department in [department_number['法律'], department_number['社學'][0:2]]:
                 department += text[over_hun + 5]
-
-            if department[0:2] == department_number['法律']:
-                message += '法律系 ' + department_name[department] + '組 '
-            elif department[0:2] == department_number['社學'][0:2]:
-                message += department_name[department] + '系 '
-            else:
-                message += department_name[department] + '系 '
-
-            message += name
 
             if department[0:2] == department_number['法律']:
                 show_text = '搜尋' + year + '學年度法律系' + department_name[department] + '組'
@@ -329,7 +319,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
-                    text=message,
+                    text=name,
                     quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(
