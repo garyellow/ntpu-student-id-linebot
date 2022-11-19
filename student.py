@@ -475,7 +475,7 @@ def handle_postback(event):
             event.reply_token, [
                 TextSendMessage(text='輸入學號可獲取學生姓名\n輸入姓名可獲取學號\n輸入系名可獲取系代碼\n輸入系代碼可獲取系名\n輸入入學學年獲取某系的學生名單',
                                 sender=mes_sender),
-                TextSendMessage(text='輸入範例(「：」之前的字不用輸入)\n學號：412345678\n姓名：林某某 or 某某\n系名：資工系 or 資訊工程學系\n系代碼：85\n' +
+                TextSendMessage(text='輸入範例(「：」以前的字都不用輸入)\n學號：412345678\n姓名：林某某 or 某某\n系名：資工系 or 資訊工程學系\n系代碼：85\n' +
                                      '入學學年：' + str(time.localtime(time.time()).tm_year - 1911) + ' or ' + str(time.localtime(time.time()).tm_year),
                                 sender=mes_sender),
             ]
