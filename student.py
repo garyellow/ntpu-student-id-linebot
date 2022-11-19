@@ -4,7 +4,6 @@ import random
 import string
 import time
 from typing import Dict
-from collections import deque
 
 import requests
 from bs4 import BeautifulSoup as Bs4
@@ -441,18 +440,15 @@ def handle_message(event):
         )
 
     elif text[0] in string.ascii_letters or len(text) < 6:
-        temp: deque[str] = deque()
+        temp = []
         for key, value in student_name.items():
             if text in value:
                 temp.append(key.ljust(11, ' ') + value)
 
-            if len(temp) == 250:
-                temp.popleft()
-
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text='\n'.join(temp),
+                text='\n'.join(temp if len(temp) < 150 else temp[-150:]),
                 sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
             )
         )
