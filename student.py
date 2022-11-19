@@ -197,9 +197,9 @@ def renew():
     with requests.Session() as s:
         s.keep_alive = False
 
-        for year in range(cur_year - 4, cur_year + 1):
+        for year in range(cur_year - 6, cur_year + 1):
             for dep in all_department_number:
-                time.sleep(random.uniform(0.01, 0.05))
+                time.sleep(random.uniform(0.01, 0.03))
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                 web = s.get(url)
                 web.encoding = 'utf-8'
@@ -212,7 +212,7 @@ def renew():
 
                 pages = len(html.find_all('span', {'class': 'item'}))
                 for i in range(2, pages):
-                    time.sleep(random.uniform(0.01, 0.05))
+                    time.sleep(random.uniform(0.01, 0.03))
                     url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
                     web.encoding = 'utf-8'
@@ -816,7 +816,7 @@ def handle_postback(event):
 
             pages = len(html.find_all('span', {'class': 'item'}))
             for i in range(2, pages):
-                time.sleep(random.uniform(0.01, 0.05))
+                time.sleep(random.uniform(0.01, 0.03))
 
                 url = 'http://120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
                 web = s.get(url)
