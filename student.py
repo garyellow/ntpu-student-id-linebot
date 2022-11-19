@@ -275,6 +275,7 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(
                     text=full_department_name[text],
+                    quick_reply=QuickReply(items=[QuickReplyButton(action=MessageAction(label='所有系代碼', text='所有系代碼'))]),
                     sender=Sender(name='安妮亞', icon_url=random.choice(sticker['安妮亞']))
                 )
             )
@@ -448,7 +449,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text='\n'.join(temp if len(temp) < 150 else temp[-150:]),
+                text='\n'.join(temp if len(temp) < 250 else temp[-250:]),
                 sender=Sender(name='洛伊德', icon_url=random.choice(sticker['洛伊德']))
             )
         )
