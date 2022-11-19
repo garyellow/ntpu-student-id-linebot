@@ -1,3 +1,4 @@
 *.ini
 .idea
+earthquake
 settings.py
