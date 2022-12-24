@@ -60,7 +60,7 @@ department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
 student_name: Dict[str, str] = {}
 start = True
-search_url = 'http://120.126.197.52/'
+search_url = ''
 
 sticker = {
     '安妮亞': [
@@ -230,7 +230,20 @@ def renew():
 
 @app.route('/check')
 def healthy():
-    global start
+    global start, search_url
+
+    ip_url = 'http://120.126.197.52/'
+    ip2_url = 'https://120.126.197.52/'
+    real_url = 'https://lms.ntpu.edu.tw/'
+
+    for url in [ip_url, ip2_url, real_url]:
+        try:
+            requests.get(url)
+            search_url = url
+            break
+        except:
+            pass
+
     if start:
         start = False
         renew()
