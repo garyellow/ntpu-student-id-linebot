@@ -60,6 +60,7 @@ department_name = {v: k for k, v in department_number.items()}
 full_department_name = {v: k for k, v in full_department_number.items()}
 student_name: Dict[str, str] = {}
 start = True
+search_url = 'http://120.126.197.52/'
 
 sticker = {
     '安妮亞': [
@@ -200,7 +201,7 @@ def renew():
         for year in range(cur_year - 6, cur_year + 1):
             for dep in all_department_number:
                 time.sleep(random.uniform(2, 5))
-                url = '120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
+                url = search_url + 'portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + str(year) + dep
                 web = s.get(url)
                 web.encoding = 'utf-8'
 
@@ -213,7 +214,7 @@ def renew():
                 pages = len(html.find_all('span', {'class': 'item'}))
                 for i in range(2, pages):
                     time.sleep(random.uniform(2, 5))
-                    url = '120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
+                    url = search_url + 'portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + str(year) + dep
                     web = s.get(url)
                     web.encoding = 'utf-8'
 
@@ -285,7 +286,7 @@ def handle_message(event):
             if student_name.__contains__(text):
                 name += student_name[text]
             else:
-                url = '120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
+                url = search_url + 'portfolio/search.php?fmScope=2&page=1&fmKeyword=' + text
                 web = requests.get(url)
                 web.encoding = 'utf-8'
 
@@ -799,7 +800,7 @@ def handle_postback(event):
         with requests.Session() as s:
             s.keep_alive = False
 
-            url = '120.126.197.52/portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
+            url = search_url + 'portfolio/search.php?fmScope=2&page=1&fmKeyword=4' + yd
             web = s.get(url)
             web.encoding = 'utf-8'
 
@@ -817,7 +818,7 @@ def handle_postback(event):
             for i in range(2, pages):
                 time.sleep(random.uniform(0.05, 0.15))
 
-                url = '120.126.197.52/portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
+                url = search_url + 'portfolio/search.php?fmScope=2&page=' + str(i) + '&fmKeyword=4' + yd
                 web = s.get(url)
                 web.encoding = 'utf-8'
 
