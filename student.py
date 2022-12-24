@@ -232,17 +232,20 @@ def renew():
 def healthy():
     global start, search_url
 
-    ip_url = 'http://120.126.197.52/'
-    ip2_url = 'https://120.126.197.52/'
-    real_url = 'https://lms.ntpu.edu.tw/'
+    try:
+        requests.get(search_url)
+    except:
+        ip_url = 'http://120.126.197.52/'
+        ip2_url = 'https://120.126.197.52/'
+        real_url = 'https://lms.ntpu.edu.tw/'
 
-    for url in [ip_url, ip2_url, real_url]:
-        try:
-            requests.get(url)
-            search_url = url
-            break
-        except:
-            pass
+        for url in [ip_url, ip2_url, real_url]:
+            try:
+                requests.get(url)
+                search_url = url
+                break
+            except:
+                pass
 
     if start:
         start = False
