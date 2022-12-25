@@ -189,9 +189,29 @@ handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
 def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
+@app.route('/url')
+def renew_url():
+    global search_url
+
+    try:
+        requests.get(search_url)
+    except:
+        ip_url = 'http://120.126.197.52/'
+        ip2_url = 'https://120.126.197.52/'
+        real_url = 'https://lms.ntpu.edu.tw/'
+
+        for url in [ip_url, ip2_url, real_url]:
+            try:
+                requests.get(url)
+                search_url = url
+                return 'OK'
+            except:
+                pass
+
+    return 'Bad Request'
 
 @app.route('/renew')
-def renew():
+def renew_student():
     global student_name
     cur_year = time.localtime(time.time()).tm_year - 1911
     new_student_name: Dict[str, str] = {}
@@ -233,24 +253,10 @@ def renew():
 def healthy():
     global start, search_url
 
-    try:
-        requests.get(search_url)
-    except:
-        ip_url = 'http://120.126.197.52/'
-        ip2_url = 'https://120.126.197.52/'
-        real_url = 'https://lms.ntpu.edu.tw/'
-
-        for url in [ip_url, ip2_url, real_url]:
-            try:
-                requests.get(url)
-                search_url = url
-                break
-            except:
-                pass
-
     if start:
         start = False
-        renew()
+        renew_url()
+        renew_student()
 
     return 'OK'
 
