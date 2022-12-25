@@ -4,6 +4,7 @@ import random
 import string
 import time
 from typing import Dict
+from copy import deepcopy
 
 import requests
 from bs4 import BeautifulSoup as Bs4
@@ -224,7 +225,7 @@ def renew():
                         number = item.find('a').get('href').split('/')[-1]
                         new_student_name[number] = name
 
-    student_name = new_student_name.copy()
+    student_name = deepcopy(new_student_name)
     return 'OK'
 
 
