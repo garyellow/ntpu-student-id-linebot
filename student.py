@@ -190,11 +190,11 @@ def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
 @app.route('/url')
-def renew_url():
+def check_url():
     global search_url
 
     try:
-        requests.get(search_url)
+        requests.get(search_url, timeout=1)
     except:
         ip_url = 'http://120.126.197.52/'
         ip2_url = 'https://120.126.197.52/'
@@ -202,7 +202,7 @@ def renew_url():
 
         for url in [ip_url, ip2_url, real_url]:
             try:
-                requests.get(url)
+                requests.get(url, timeout=1)
                 search_url = url
                 return 'OK'
             except:
@@ -255,7 +255,7 @@ def healthy():
 
     if start:
         start = False
-        renew_url()
+        check_url()
         renew_student()
 
     return 'OK'
