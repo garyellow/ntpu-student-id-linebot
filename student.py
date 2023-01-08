@@ -101,6 +101,21 @@ sticker = {
         'https://spy-family.net/assets/img/special/episode11/04.png',
         'https://spy-family.net/assets/img/special/episode12/03.png',
         'https://spy-family.net/assets/img/special/episode12/06.png',
+        'https://spy-family.net/assets/img/special/episode13/01.png',
+        'https://spy-family.net/assets/img/special/episode14/02.png',
+        'https://spy-family.net/assets/img/special/episode15/06.png',
+        'https://spy-family.net/assets/img/special/episode17/01.png',
+        'https://spy-family.net/assets/img/special/episode18/05.png',
+        'https://spy-family.net/assets/img/special/episode18/05.png',
+        'https://spy-family.net/assets/img/special/episode19/04.png',
+        'https://spy-family.net/assets/img/special/episode20/03.png',
+        'https://spy-family.net/assets/img/special/episode20/06.png',
+        'https://spy-family.net/assets/img/special/episode21/06.png',
+        'https://spy-family.net/assets/img/special/episode22/05.png',
+        'https://spy-family.net/assets/img/special/episode23/02.png',
+        'https://spy-family.net/assets/img/special/episode24/01.png',
+        'https://spy-family.net/assets/img/special/episode24/03.png',
+        'https://spy-family.net/assets/img/special/episode25/03.png'
     ],
     '安妮亞哭': [
         'https://spy-family.net/assets/img/special/anya/04.png',
@@ -119,7 +134,11 @@ sticker = {
         'https://spy-family.net/assets/img/special/episode7/01.png',
         'https://spy-family.net/assets/img/special/episode9/04.png',
         'https://spy-family.net/assets/img/special/episode11/01.png',
-        'https://spy-family.net/assets/img/special/episode11/06.png'
+        'https://spy-family.net/assets/img/special/episode11/06.png',
+        'https://spy-family.net/assets/img/special/episode14/04.png',
+        'https://spy-family.net/assets/img/special/episode17/04.png',
+        'https://spy-family.net/assets/img/special/episode21/02.png',
+        'https://spy-family.net/assets/img/special/episode25/01.png'
     ],
     '洛伊德': [
         'https://spy-family.net/assets/img/special/07.png',
@@ -142,7 +161,8 @@ sticker = {
         'https://spy-family.net/assets/img/special/episode5/04.png',
         'https://spy-family.net/assets/img/special/episode8/05.png',
         'https://spy-family.net/assets/img/special/episode9/03.png',
-        'https://spy-family.net/assets/img/special/episode11/05.png'
+        'https://spy-family.net/assets/img/special/episode11/05.png',
+        'https://spy-family.net/assets/img/special/episode15/03.png',
     ],
     '其他': [
         'https://spy-family.net/assets/img/special/09.png',
@@ -178,6 +198,19 @@ sticker = {
         'https://spy-family.net/assets/img/special/episode12/05.png',
         'https://spy-family.net/assets/img/special/summermission01/01.png',
         'https://spy-family.net/assets/img/special/summermission01/04.png',
+        'https://spy-family.net/assets/img/special/episode13/04.png',
+        'https://spy-family.net/assets/img/special/episode13/05.png',
+        'https://spy-family.net/assets/img/special/episode15/04.png',
+        'https://spy-family.net/assets/img/special/episode15/05.png',
+        'https://spy-family.net/assets/img/special/episode17/02.png',
+        'https://spy-family.net/assets/img/special/episode17/03.png',
+        'https://spy-family.net/assets/img/special/episode18/01.png',
+        'https://spy-family.net/assets/img/special/episode18/03.png',
+        'https://spy-family.net/assets/img/special/episode19/01.png',
+        'https://spy-family.net/assets/img/special/episode19/06.png',
+        'https://spy-family.net/assets/img/special/episode21/03.png',
+        'https://spy-family.net/assets/img/special/episode24/02.png',
+        'https://spy-family.net/assets/img/special/episode24/04.png'
     ]
 }
 
@@ -189,13 +222,14 @@ handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
 def github():
     return redirect('https://github.com/garyellow/ntpu-student-id-linebot')
 
+
 @app.route('/url')
 def check_url():
     global search_url
 
     try:
         requests.get(search_url, timeout=1)
-    except:
+    except requests.exceptions.RequestException:
         ip_url = 'http://120.126.197.52/'
         ip2_url = 'https://120.126.197.52/'
         real_url = 'https://lms.ntpu.edu.tw/'
@@ -205,10 +239,11 @@ def check_url():
                 requests.get(url, timeout=1)
                 search_url = url
                 return 'OK'
-            except:
+            except requests.exceptions.RequestException:
                 pass
 
     return 'Bad Request'
+
 
 @app.route('/renew')
 def renew_student():
